@@ -57,6 +57,6 @@ const colors = {
   brand: {
     900: '#000000',
   },
-}
+};
 
-export default colors
+export default colors;
