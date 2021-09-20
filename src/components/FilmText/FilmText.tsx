@@ -3,6 +3,7 @@ import { styled } from '@chakra-ui/system';
 
 const FilmText = styled(Text, {
   baseStyle: {
+    // fontFamily: 'condensed',
     fontWeight: 600,
     textTransform: 'uppercase',
     fontSize: '.70em',

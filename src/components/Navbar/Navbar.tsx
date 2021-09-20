@@ -1,7 +1,7 @@
 import { HStack, Box, Button, Container } from '@chakra-ui/react';
 import Logo from '../Logo';
 import Link from 'next/link';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 
 type Props = {
   menuItems: { label: string; path: string }[];
