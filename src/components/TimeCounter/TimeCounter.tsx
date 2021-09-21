@@ -21,7 +21,12 @@ const TimeCounter: React.VFC<Props> = ({ from, to }) => {
     (secsTo % 60).toString().padStart(2, '0'),
   ];
   return (
-    <Text fontWeight="bold">
+    <Text
+      data-testid="clock"
+      as="time"
+      dateTime={to.toISOString()}
+      fontWeight="bold"
+    >
       <Clock>{hours}</Clock> : <Clock>{minutes}</Clock> :{' '}
       <Clock>{seconds}</Clock>
     </Text>
