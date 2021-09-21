@@ -6,6 +6,8 @@ import { useState } from 'react';
 import FilmText from '@/components/FilmText';
 import { isAfter } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
+import TimeCounter from '@/components/TimeCounter';
+import useSeconds from '@/lib/useSeconds';
 
 type Props = {
   films: Film[];
@@ -15,15 +17,20 @@ const prompterVariants = {
   initial: {
     opacity: 0,
     transform: 'translateY(100%)',
-    duration: 0.5,
+
     position: 'absolute',
   },
-  animate: { opacity: 1, transform: 'translateY(0%)', position: 'relative' },
+  animate: {
+    opacity: 1,
+    transform: 'translateY(0%)',
+    position: 'relative',
+    transition: { duration: 0.3 },
+  },
   exit: {
     opacity: 0,
     transform: 'translateY(-100%)',
     position: 'absolute',
-    duration: 0.2,
+    transition: { duration: 0.3 },
   },
 };
 const PrompterText = motion(Text);
@@ -39,10 +46,10 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const film = films[selectedIndex];
   const today = new Date();
-  const isDisabled =
-    !film.startDate ||
-    isAfter(new Date(film.startDate), today) ||
-    (!!film.endDate && !isAfter(new Date(film.endDate), today));
+  const now = useSeconds();
+  const hasStarted =
+    !film.startDate || !isAfter(new Date(film.startDate), today);
+  const hasEnded = !!film.endDate && !isAfter(new Date(film.endDate), today);
 
   return (
     <SimpleGrid columns={[1, 2]} gap={8} alignItems="center">
@@ -53,27 +60,43 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
         setSelectedIndex={setSelectedIndex}
       />
       <Box fontSize="md">
-        <AnimatePresence>
-          <PrompterText mb={2} key={`${film.title}-date`}>
-            <FilmText>Segunda-feira</FilmText> 11 de Outubro{' '}
-            <FilmText>18h</FilmText>
-          </PrompterText>
-        </AnimatePresence>
+        <Box overflow="hidden" position="relative">
+          <AnimatePresence>
+            <PrompterText mb={2} key={`${film.title}-date`}>
+              <FilmText>Segunda-feira</FilmText> 11 de Outubro{' '}
+              <FilmText>18h</FilmText>
+            </PrompterText>
+          </AnimatePresence>
+        </Box>
 
         <DiscoHeading key={`${film.title}-title`}>{film.title}</DiscoHeading>
-        <AnimatePresence>
-          <PrompterText mb={4} key={`${film.title}-deets`}>
-            <FilmText>Direção</FilmText> Lael Rodrigues <FilmText>Ano</FilmText>{' '}
-            1984 <FilmText>Dur.</FilmText> 72’
-          </PrompterText>
-        </AnimatePresence>
+        <Box overflow="hidden" position="relative">
+          <AnimatePresence>
+            <PrompterText mb={4} key={`${film.title}-deets`}>
+              <FilmText>Direção</FilmText> Lael Rodrigues{' '}
+              <FilmText>Ano</FilmText> 1984 <FilmText>Dur.</FilmText> 72’
+            </PrompterText>
+          </AnimatePresence>
+        </Box>
         <HStack spacing={8}>
           <Button variant="secondary" rightIcon={<PlusIcon />}>
             Ver mais
           </Button>
-          <Button isDisabled={isDisabled} variant="primary">
+          <Button isDisabled={!hasStarted || hasEnded} variant="primary">
             Assistir
           </Button>
+          {!hasStarted && film.startDate && (
+            <Box whiteSpace="nowrap">
+              <FilmText>Disponível em</FilmText>
+              <TimeCounter from={now} to={new Date(film.startDate)} />
+            </Box>
+          )}
+          {hasStarted && !hasEnded && film.endDate && (
+            <Box whiteSpace="nowrap">
+              <FilmText>Disponível por</FilmText>
+              <TimeCounter from={new Date(film.endDate)} to={now} />
+            </Box>
+          )}
         </HStack>
       </Box>
     </SimpleGrid>

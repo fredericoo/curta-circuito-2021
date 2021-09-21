@@ -8,8 +8,8 @@ export const films: Film[] = [
     },
     title: 'Bete Balanço',
     bgColor: 'pink-800',
-    startDate: new Date('2022-01-01').toISOString(),
-    endDate: new Date('2022-01-01').toISOString(),
+    startDate: new Date('2022-01-01').toDateString(),
+    endDate: new Date('2022-01-01').toDateString(),
   },
   {
     cover: {
@@ -18,7 +18,7 @@ export const films: Film[] = [
     },
     title: 'The Best of The Best',
     bgColor: 'red-600',
-    startDate: new Date('2021-09-01').toISOString(),
+    startDate: new Date('2021-09-01').toDateString(),
     endDate: new Date('2022-01-01').toISOString(),
   },
   {
