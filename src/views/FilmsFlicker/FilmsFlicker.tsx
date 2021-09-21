@@ -8,6 +8,8 @@ import { isAfter } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import TimeCounter from '@/components/TimeCounter';
 import useSeconds from '@/lib/useSeconds';
+import { getFilmUrl } from '@/lib/queries';
+import Link from 'next/link';
 
 type Props = {
   films: Film[];
@@ -79,9 +81,13 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
           </AnimatePresence>
         </Box>
         <HStack spacing={8}>
-          <Button variant="secondary" rightIcon={<PlusIcon />}>
-            Ver mais
-          </Button>
+          {film.slug && (
+            <Link href={getFilmUrl(film.slug)} passHref>
+              <Button as="a" variant="secondary" rightIcon={<PlusIcon />}>
+                Ver mais
+              </Button>
+            </Link>
+          )}
           <Button isDisabled={!hasStarted || hasEnded} variant="primary">
             Assistir
           </Button>

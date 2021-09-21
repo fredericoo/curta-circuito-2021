@@ -1,5 +1,6 @@
 export type Film = {
   uid?: string;
+  slug?: string;
   title: string;
   startDate?: string;
   endDate?: string;
