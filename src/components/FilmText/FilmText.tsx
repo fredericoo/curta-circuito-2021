@@ -1,17 +1,26 @@
 import { Text } from '@chakra-ui/layout';
 import { styled } from '@chakra-ui/system';
 
-const FilmText = styled(Text, {
+const Label = styled(Text, {
   baseStyle: {
     fontWeight: 600,
     textTransform: 'uppercase',
     fontSize: '.70em',
     letterSpacing: 'tight',
+    display: 'inline',
   },
 });
 
-FilmText.defaultProps = {
-  as: 'span',
+type Props = {
+  label: string;
 };
+const FilmText: React.FC<Props> = ({ label, children }) => (
+  <>
+    <Label as="dt">{label}</Label>{' '}
+    <Text as="dd" display="inline">
+      {children}
+    </Text>
+  </>
+);
 
 export default FilmText;

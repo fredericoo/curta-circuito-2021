@@ -21,14 +21,8 @@ const TimeCounter: React.VFC<Props> = ({ from, to }) => {
     (secsTo % 60).toString().padStart(2, '0'),
   ];
   return (
-    <Text
-      data-testid="clock"
-      as="time"
-      dateTime={to.toISOString()}
-      fontWeight="bold"
-    >
-      <Clock>{hours}</Clock> : <Clock>{minutes}</Clock> :{' '}
-      <Clock>{seconds}</Clock>
+    <Text display="block" data-testid="clock" as="time" dateTime={to.toISOString()} fontWeight="bold">
+      <Clock>{hours}</Clock> : <Clock>{minutes}</Clock> : <Clock>{seconds}</Clock>
     </Text>
   );
 };
@@ -50,12 +44,7 @@ const variants = {
 const MotionBox = motion(Box);
 const Clock: React.VFC<{ children: string }> = ({ children }) => {
   return (
-    <SimpleGrid
-      columns={children.length}
-      gap="2px"
-      overflow="hidden"
-      display="inline-grid"
-    >
+    <SimpleGrid columns={children.length} gap="2px" overflow="hidden" display="inline-grid">
       <AnimatePresence>
         {children.split('').map((letter, i) => (
           <MotionBox

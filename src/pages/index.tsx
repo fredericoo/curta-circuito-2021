@@ -1,35 +1,39 @@
-import Navbar from '@/components/Navbar';
-import { films } from '@/lib/mocks';
+import { getAllFilms } from '@/lib/queries';
+import { Film } from '@/lib/types';
 import FilmsFlicker from '@/views/FilmsFlicker/FilmsFlicker';
 import { Box, Container, SimpleGrid, GridItem, Text } from '@chakra-ui/react';
+import { GetStaticProps } from 'next';
 
-const mockMenuItems = [
-  { label: 'Cadernos de Crítica', path: '/cadernos' },
-  { label: 'Sobre', path: '/sobre' },
-  { label: 'Programação', path: '/' },
-];
+type HomeProps = {
+  films: Film[];
+};
 
-const Home: React.VFC = () => (
-  <>
-    <Navbar menuItems={mockMenuItems} />
-    <Box bg="gray.100" minH="100vh" overflow="hidden">
-      <Container maxW="container.xl" pt={16}>
-        <SimpleGrid columns={[1, 3]} spacing={8} alignItems="center">
-          <GridItem>
-            <Text fontSize="md" color="pink.600">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum,
-              rem eum. Quia, deserunt placeat magni obcaecati nisi ipsa
-              repellendus illo commodi aspernatur consectetur animi repellat
-              error quo tempora, sint magnam.
-            </Text>
-          </GridItem>
-          <GridItem colSpan={2}>
-            <FilmsFlicker films={films} />
-          </GridItem>
-        </SimpleGrid>
-      </Container>
-    </Box>
-  </>
+const Home: React.VFC<HomeProps> = ({ films }) => (
+  <Box bg="gray.100" minH="100vh" overflow="hidden">
+    <Container maxW="container.xl" pt={16}>
+      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8} alignItems="center">
+        <GridItem gridRow={{ base: 2, md: 'auto' }}>
+          <Text fontSize="md" color="pink.600">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum, rem eum. Quia, deserunt placeat magni
+            obcaecati nisi ipsa repellendus illo commodi aspernatur consectetur animi repellat error quo tempora, sint
+            magnam.
+          </Text>
+        </GridItem>
+        <GridItem colSpan={2}>
+          <FilmsFlicker films={films} />
+        </GridItem>
+      </SimpleGrid>
+    </Container>
+  </Box>
 );
+
+export const getStaticProps: GetStaticProps = async () => {
+  const films = await getAllFilms();
+  return {
+    props: {
+      films,
+    },
+  };
+};
 
 export default Home;

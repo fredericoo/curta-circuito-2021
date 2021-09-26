@@ -8,8 +8,10 @@ import { isAfter } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import TimeCounter from '@/components/TimeCounter';
 import useSeconds from '@/lib/useSeconds';
-import { getFilmUrl } from '@/lib/queries';
+import { resolveDocumentURL } from '@/lib/queries';
 import Link from 'next/link';
+import { RichText } from 'prismic-reactjs';
+import format from '@/lib/dateTime';
 
 type Props = {
   films: Film[];
@@ -42,47 +44,54 @@ PrompterText.defaultProps = {
   animate: 'animate',
   exit: 'exit',
   display: 'inline-block',
+  as: 'dl',
 };
 
 const FilmsFlicker: React.VFC<Props> = ({ films }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const film = films[selectedIndex];
-  const today = new Date();
   const now = useSeconds();
-  const hasStarted =
-    !film.startDate || !isAfter(new Date(film.startDate), today);
-  const hasEnded = !!film.endDate && !isAfter(new Date(film.endDate), today);
+  const today = new Date();
+
+  const film = films[selectedIndex];
+  if (!film) return null;
+  const data = film.data;
+
+  const hasStarted = !data.startdate || !isAfter(new Date(data.startdate), today);
+  const hasEnded = !!data.enddate && !isAfter(new Date(data.enddate), today);
 
   return (
     <SimpleGrid columns={[1, 2]} gap={8} alignItems="center">
-      <AlbumFlicker
-        albums={films}
-        albumCount={4}
-        selectedIndex={selectedIndex}
-        setSelectedIndex={setSelectedIndex}
-      />
+      <AlbumFlicker albums={films} albumCount={5} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
       <Box fontSize="md">
         <Box overflow="hidden" position="relative">
           <AnimatePresence>
-            <PrompterText mb={2} key={`${film.title}-date`}>
-              <FilmText>Segunda-feira</FilmText> 11 de Outubro{' '}
-              <FilmText>18h</FilmText>
+            <PrompterText mb={2} key={`${film.uid}-date`}>
+              {data.startdate && (
+                <>
+                  <FilmText label={format(new Date(data.startdate), 'eeee')}>
+                    {format(new Date(data.startdate), "d 'de' LLLL")}
+                  </FilmText>{' '}
+                  <FilmText label={format(new Date(data.startdate), 'p')} />
+                </>
+              )}
             </PrompterText>
           </AnimatePresence>
         </Box>
 
-        <DiscoHeading key={`${film.title}-title`}>{film.title}</DiscoHeading>
+        {data.title && <DiscoHeading key={`${film.uid}-title`}>{RichText.asText(data.title)}</DiscoHeading>}
+
         <Box overflow="hidden" position="relative">
           <AnimatePresence>
-            <PrompterText mb={4} key={`${film.title}-deets`}>
-              <FilmText>Direção</FilmText> Lael Rodrigues{' '}
-              <FilmText>Ano</FilmText> 1984 <FilmText>Dur.</FilmText> 72’
+            <PrompterText mb={4} key={`${film.uid}-details`}>
+              {data.director && <FilmText label="Direção">{data.director}</FilmText>}{' '}
+              {data.year && <FilmText label="Ano">{data.year}</FilmText>}{' '}
+              {data.duration && <FilmText label="Dur.">{data.duration}’</FilmText>}{' '}
             </PrompterText>
           </AnimatePresence>
         </Box>
         <HStack spacing={8}>
-          {film.slug && (
-            <Link href={getFilmUrl(film.slug)} passHref>
+          {film && (
+            <Link href={resolveDocumentURL(film)} passHref>
               <Button as="a" variant="secondary" rightIcon={<PlusIcon />}>
                 Ver mais
               </Button>
@@ -91,16 +100,16 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
           <Button isDisabled={!hasStarted || hasEnded} variant="primary">
             Assistir
           </Button>
-          {!hasStarted && film.startDate && (
+          {!hasStarted && data.startdate && (
             <Box whiteSpace="nowrap">
-              <FilmText>Disponível em</FilmText>
-              <TimeCounter from={now} to={new Date(film.startDate)} />
+              <FilmText label="Disponível em" />
+              <TimeCounter from={now} to={new Date(data.startdate)} />
             </Box>
           )}
-          {hasStarted && !hasEnded && film.endDate && (
+          {hasStarted && !hasEnded && data.enddate && (
             <Box whiteSpace="nowrap">
-              <FilmText>Disponível por</FilmText>
-              <TimeCounter from={new Date(film.endDate)} to={now} />
+              <FilmText label="Disponível por" />
+              <TimeCounter from={new Date(data.enddate)} to={now} />
             </Box>
           )}
         </HStack>
@@ -110,14 +119,7 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
 };
 
 const PlusIcon: React.VFC = () => (
-  <svg
-    width="17"
-    height="17"
-    viewBox="0 0 17 17"
-    fill="none"
-    stroke="currentColor"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M8.50033 15.5837C12.4123 15.5837 15.5837 12.4123 15.5837 8.50033C15.5837 4.58831 12.4123 1.41699 8.50033 1.41699C4.58831 1.41699 1.41699 4.58831 1.41699 8.50033C1.41699 12.4123 4.58831 15.5837 8.50033 15.5837Z"
       strokeLinecap="round"

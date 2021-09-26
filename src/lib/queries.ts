@@ -1,16 +1,30 @@
-import { films } from './mocks';
-import { Film } from './types';
+import { Client } from './client';
+import { Film, PrismicLink } from './types';
+import Prismic from '@prismicio/client';
 
 export const getFilmSlugs = async (): Promise<string[]> => {
-  const allFilms = films;
-  return allFilms.map((film) => film?.slug || '').filter(Boolean);
+  const allFilms = await Client().query(Prismic.Predicates.at('document.type', 'filme'), { fetch: ['uid'] });
+  return allFilms.results.map((film) => film.uid || '').filter(Boolean);
 };
 
-export const getFilmBySlug = async (
-  slug: string
-): Promise<Film | undefined> => {
-  const allFilms = films;
-  return allFilms.find((film) => film?.slug === slug);
+export const getAllFilms = async (): Promise<Film[]> => {
+  const allFilms = await Client().query(Prismic.Predicates.at('document.type', 'filme'));
+  return (allFilms.results || []) as Film[];
 };
 
-export const getFilmUrl = (slug: string): string => `/programacao/${slug}`;
+export const getFilmBySlug = async (slug: string): Promise<Film | undefined> => {
+  const query = (await Client().getByUID('filme', slug, {})) as Film;
+  return query;
+};
+
+export const resolveDocumentURL = (link: PrismicLink): string => {
+  if ('link_type' in link) return link.url;
+  switch (link.type) {
+    case 'home':
+      return `/`;
+    case 'filme':
+      return `/programacao/${link.uid}`;
+    default:
+      return `/${link.uid}`;
+  }
+};
