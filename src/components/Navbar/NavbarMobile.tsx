@@ -8,7 +8,7 @@ const NavbarMobile: React.VFC<NavbarProps> = ({ menuItems }) => {
   const { asPath } = useRouter();
   return (
     <>
-      <Box as="aside" bg="pink.500" zIndex="overlay">
+      <Box as="aside" bg="pink.400" zIndex="overlay">
         <Container display="flex" maxW="container.xl" px={4} pt={4} justifyContent="center" lignItems="flex-end">
           <Link href="/" passHref>
             <Box as="a" mb="-2%" zIndex="sticky">
@@ -36,9 +36,9 @@ const NavbarMobile: React.VFC<NavbarProps> = ({ menuItems }) => {
                 display="block"
                 borderBottomRadius="none"
                 borderTopRadius="xl"
-                bg={asPath === path ? 'pink.500' : 'gray.200'}
+                bg={asPath === path ? 'pink.400' : 'gray.200'}
                 color={asPath === path ? 'white' : 'gray.800'}
-                _hover={{ bg: asPath === path ? 'pink.500' : 'gray.200' }}
+                _hover={{ bg: asPath === path ? 'pink.400' : 'gray.200' }}
                 h="auto"
                 px={4}
                 fontSize="1rem"
