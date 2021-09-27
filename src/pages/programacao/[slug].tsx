@@ -7,37 +7,40 @@ import Album from '@/components/Album';
 import Image from '@/components/Image';
 import { useRouter } from 'next/router';
 import { RichText } from 'prismic-reactjs';
+import Carousel from '@/components/Carousel/Carousel';
+import Critic from '@/components/Critic';
 
 type FilmPageProps = {
   film: Film;
 };
 
-const tabs = [
-  { label: 'Trailer', children: <div /> },
-  { label: 'Crítica', children: <div /> },
-  { label: 'Bate papo', children: <div /> },
-  { label: 'Fotos', children: <div /> },
-];
-
 const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
   const { back } = useRouter();
+  const tabs = [
+    { label: 'Trailer', children: <div /> },
+    { label: 'Crítica', children: <Critic /> },
+    { label: 'Bate papo', children: <div /> },
+  ];
+
+  data.carousel &&
+    tabs.push({ label: 'Fotos', children: <Carousel photos={data.carousel.map(({ image }) => image)} /> });
 
   return (
-    <SimpleGrid columns={{ base: 1, md: 2 }} minH="100vh" bg="gray.100">
+    <SimpleGrid columns={{ base: 1, md: 2 }}>
       <Box>
         <VStack bg={data.bgcolor?.replace('-', '.')} p={8}>
           <HStack justify="flex-start" w="100%">
             <Button onClick={back}>←</Button>
           </HStack>
-          <Album w="350px" h="350px" bg="white" borderRadius="xl" overflow="hidden">
+          <Album w="350px" h="350px" bg="white">
             {data.cover && (
               <Image
-                src={data.cover.url + '?v=5'}
+                src={data.cover.url}
                 width={data.cover.dimensions.width}
                 height={data.cover.dimensions.height}
                 layout="responsive"
                 alt={data.cover?.alt}
-                sizes="(max-width: 600px) 100vw, 600px"
+                sizes="512px"
               />
             )}
           </Album>
@@ -45,11 +48,11 @@ const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
         {data.title && <RichText render={data.title} />}
       </Box>
 
-      <Accordion bg="gray.200">
+      <Accordion bgImage={`url(${data.image?.url})`} bgSize="50vw auto" bgAttachment="fixed">
         {tabs.map(({ label, children }) => (
-          <AccordionItem bg="gray.100" key={label}>
+          <AccordionItem key={label} bg="gray.100" borderColor={data.tableColor}>
             <AccordionButton>{label}</AccordionButton>
-            <AccordionPanel>{children}</AccordionPanel>
+            <AccordionPanel p={0}>{children}</AccordionPanel>
           </AccordionItem>
         ))}
       </Accordion>

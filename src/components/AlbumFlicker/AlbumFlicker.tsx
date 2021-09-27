@@ -59,7 +59,7 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
   }, [albumCount, albums, selectedIndex]);
 
   return (
-    <Box h="0" pb="130%" position="relative">
+    <Box h="0" pb="130%" position="relative" sx={{ perspective: '10000px' }}>
       <AnimatePresence>
         {wrap.map(({ uid, data: { cover, title, bgcolor } }, i) => (
           <Album
@@ -75,9 +75,9 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
             whileTap="tap"
             exit="exit"
             mixBlendMode={!i ? 'normal' : 'multiply'}
-            bgImage={`linear-gradient(-45deg, rgba(0,0,0,0), rgba(0,0,0,0.25)), linear-gradient(0deg, var(--cc2021-colors-${bgcolor}), var(--cc2021-colors-${bgcolor}))`}
+            bgImage={`linear-gradient(-45deg, rgba(0,0,0,0), rgba(0,0,0,0.25)), linear-gradient(0deg, ${bgcolor}, ${bgcolor})`}
             onClick={flickForward}
-            zIndex={albumCount - i}
+            backfaceVisibility="hidden"
             userSelect="none"
           >
             <Box pointerEvents="none" opacity={i === 0 ? 1 : 0} transition="all .6s ease-out" _hover={{ opacity: 1 }}>
@@ -87,6 +87,7 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
                   width={cover?.dimensions.width}
                   height={cover?.dimensions.height}
                   alt={'Capa do filme' + (title ? ` ${RichText.asText(title)}` : '')}
+                  sizes="256px"
                 />
               )}
             </Box>

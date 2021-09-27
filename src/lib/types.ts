@@ -6,6 +6,7 @@ export type Film = Omit<Document, 'type' | 'data'> & {
   data: {
     title?: RichTextBlock[];
     bgcolor?: string;
+    tableColor?: string;
     cover?: PrismicImage;
     startdate?: string;
     enddate?: string;
@@ -23,12 +24,19 @@ export type Film = Omit<Document, 'type' | 'data'> & {
     interview_image?: PrismicImage;
     interview_youtube?: PrismicWebLink;
     interview_spotify?: PrismicWebLink;
-    carousel?: PrismicImage[];
-    image?: PrismicImage[];
+    carousel?: { image: PrismicImage }[];
+    image?: PrismicImage;
     seo_title?: string;
     seo_desc?: string;
     seo_img?: PrismicImage;
   };
+};
+
+export type Sponsor = { sponsor_logo?: PrismicImage; sponsor_type?: string };
+
+export type Config = {
+  staff?: { role?: string; name?: string }[];
+  sponsor?: Sponsor[];
 };
 
 export type PrismicImage = {
@@ -47,6 +55,12 @@ export type PrismicDocumentLink = {
 
 export type PrismicWebLink = {
   link_type: 'Web';
-  url: string;
+  url?: string;
 };
-export type PrismicLink = PrismicDocumentLink | PrismicWebLink;
+
+export type PrismicMediaLink = {
+  link_type: 'Media';
+  url?: string;
+};
+
+export type PrismicLink = PrismicDocumentLink | PrismicWebLink | PrismicMediaLink;

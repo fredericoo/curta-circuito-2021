@@ -7,7 +7,7 @@ const Label = styled(Text, {
     textTransform: 'uppercase',
     fontSize: '.70em',
     letterSpacing: 'tight',
-    display: 'inline',
+    display: 'inline-block',
   },
 });
 
@@ -17,7 +17,7 @@ type Props = {
 const FilmText: React.FC<Props> = ({ label, children }) => (
   <>
     <Label as="dt">{label}</Label>{' '}
-    <Text as="dd" display="inline">
+    <Text as="dd" display="inline" mr=".5em">
       {children}
     </Text>
   </>

@@ -1,6 +1,7 @@
 import { Client } from './client';
 import { Film, PrismicLink } from './types';
 import Prismic from '@prismicio/client';
+import { Document } from '@prismicio/client/types/documents';
 
 export const getFilmSlugs = async (): Promise<string[]> => {
   const allFilms = await Client().query(Prismic.Predicates.at('document.type', 'filme'), { fetch: ['uid'] });
@@ -8,7 +9,9 @@ export const getFilmSlugs = async (): Promise<string[]> => {
 };
 
 export const getAllFilms = async (): Promise<Film[]> => {
-  const allFilms = await Client().query(Prismic.Predicates.at('document.type', 'filme'));
+  const allFilms = await Client().query(Prismic.Predicates.at('document.type', 'filme'), {
+    orderings: '[my.filme.startdate]',
+  });
   return (allFilms.results || []) as Film[];
 };
 
@@ -17,8 +20,12 @@ export const getFilmBySlug = async (slug: string): Promise<Film | undefined> => 
   return query;
 };
 
+export const getPage = async (type: string): Promise<Document> => {
+  return await Client().getSingle(type, {});
+};
+
 export const resolveDocumentURL = (link: PrismicLink): string => {
-  if ('link_type' in link) return link.url;
+  if ('link_type' in link) return link.url || '';
   switch (link.type) {
     case 'home':
       return `/`;

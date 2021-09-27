@@ -6,6 +6,4 @@ const Image: React.VFC<Props> = (props) => {
   return <NextImage {...props} />;
 };
 
-Image.defaultProps = {};
-
 export default Image;

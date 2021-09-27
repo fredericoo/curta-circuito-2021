@@ -1,5 +1,5 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
-import { ReactElement } from 'react'
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { ReactElement } from 'react';
 
 class MyDocument extends Document {
   render(): ReactElement {
@@ -7,14 +7,15 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link rel="stylesheet" href="https://use.typekit.net/btq2mft.css" />
+          <meta name="viewport" content="viewport-fit=cover" />
         </Head>
         <body>
           <Main />
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
-export default MyDocument
+export default MyDocument;
