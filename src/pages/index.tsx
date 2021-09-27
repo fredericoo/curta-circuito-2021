@@ -10,8 +10,8 @@ type HomeProps = {
 };
 
 const Home: React.VFC<HomeProps> = ({ films }) => (
-  <Container maxW="container.xl" pt={16}>
-    <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8} alignItems="center">
+  <Container maxW="container.xl" pt={{ md: 16 }}>
+    <SimpleGrid columns={{ base: 1, md: 3 }} gap={8} alignItems="center">
       <GridItem gridRow={{ base: 2, md: 'auto' }}>
         <Text fontSize="md" color="pink.600">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum, rem eum. Quia, deserunt placeat magni
