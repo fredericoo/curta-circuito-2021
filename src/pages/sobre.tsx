@@ -54,7 +54,7 @@ const ReviewerBox: React.VFC<Reviewer> = ({ image, name, bio }) => {
               src={image.url}
               width={image.dimensions?.width}
               height={image.dimensions?.height}
-              alt={image.alt}
+              alt={RichText.asText(name)}
               layout="responsive"
               sizes="512px"
             />

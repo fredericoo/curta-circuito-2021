@@ -97,7 +97,7 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
                   src={cover?.url}
                   width={cover?.dimensions.width}
                   height={cover?.dimensions.height}
-                  alt={'Capa do filme' + (title ? ` ${RichText.asText(title)}` : '')}
+                  alt={'Capa do filme' + (title ? ` ${RichText.asText(title)}` : '') + ' por Paulo Marcelo Oz'}
                   sizes="256px"
                 />
               )}

@@ -57,7 +57,7 @@ const ReviewBook: React.VFC<ReviewBookProps> = ({ image, year, pdf, audiobook })
               src={image.url}
               width={image.dimensions?.width}
               height={image.dimensions?.height}
-              alt={image.alt}
+              alt={`Caderno de Crítica Curta Circuito ${year}`}
               layout="responsive"
               sizes="512px"
             />
