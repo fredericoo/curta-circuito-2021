@@ -8,6 +8,7 @@ import { GetStaticProps } from 'next';
 import { RichText, RichTextBlock } from 'prismic-reactjs';
 import Image from 'next/image';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
 
 type Reviewer = { image: PrismicImage; name: RichTextBlock[]; bio: RichTextBlock[] };
 type Props = {
@@ -16,13 +17,18 @@ type Props = {
     text: RichTextBlock[];
     author: { role: string; name: string }[];
     reviewer: Reviewer[];
+    seo_title?: string;
+    seo_desc?: string;
+    seo_img?: PrismicImage;
   };
   config: Config;
 };
 
 const AboutPage: React.VFC<Props> = ({ data, config }) => {
+  if (!data) return null;
   return (
     <>
+      <SEO title={data.seo_title} desc={data.seo_desc} imageUrl={data.seo_img?.url} />
       <Container maxW="container.xl" fontSize="md">
         <Box py={16} textAlign="center">
           <DiscoHeading>{data.title ? RichText.asText(data.title) : 'Sobre'}</DiscoHeading>

@@ -1,0 +1,16 @@
+{
+  "name": "Curta Circuito 2021",
+  "short_name": "Curta Circuito 2021",
+  "icons": [
+    {
+      "src": "/img/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "https://curtacircuito.com.br",
+  "background_color": "#F9F7F1",
+  "theme_color": "#FF47AC",
+  "display": "fullscreen"
+}

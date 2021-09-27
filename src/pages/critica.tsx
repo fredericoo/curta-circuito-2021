@@ -9,6 +9,7 @@ import { GetStaticProps } from 'next';
 import { RichText } from 'prismic-reactjs';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
 
 type Props = {
   data: Document['data'];
@@ -16,11 +17,14 @@ type Props = {
 };
 
 const AboutPage: React.VFC<Props> = ({ data, config }) => {
+  if (!data) return null;
+  const pageTitle = data.title ? RichText.asText(data.title) : 'Cadernos de Crítica';
   return (
     <>
+      <SEO title={data.seo_title} desc={data.seo_desc} imageUrl={data.seo_img?.url} />
       <Container maxW="container.xl">
         <Box py={16} textAlign="center">
-          <DiscoHeading>{data.title ? RichText.asText(data.title) : 'Sobre'}</DiscoHeading>
+          <DiscoHeading>{pageTitle}</DiscoHeading>
         </Box>
         <SimpleGrid gap={8} columns={{ base: 1, md: 2, lg: 4 }}>
           {data.text && (

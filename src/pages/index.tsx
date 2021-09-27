@@ -1,3 +1,4 @@
+import SEO from '@/components/SEO';
 import orderFilms from '@/lib/orderFilms';
 import { getAllFilms } from '@/lib/queries';
 import { Film } from '@/lib/types';
@@ -11,6 +12,7 @@ type HomeProps = {
 
 const Home: React.VFC<HomeProps> = ({ films }) => (
   <Container maxW="container.xl" pt={{ md: 16 }}>
+    <SEO />
     <SimpleGrid columns={{ base: 1, md: 3 }} gap={8} alignItems="center">
       <GridItem gridRow={{ base: 2, md: 'auto' }}>
         <Text fontSize="md" color="pink.600">

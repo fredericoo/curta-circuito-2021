@@ -6,7 +6,7 @@ import shadows from './shadows';
 export const theme = extendTheme({
   styles: {
     global: {
-      'html, body': { background: 'pink.500' },
+      'html, body': { background: 'pink.400' },
     },
   },
   fonts: {
