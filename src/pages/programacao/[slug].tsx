@@ -1,7 +1,7 @@
 import { getFilmBySlug, getFilmSlugs } from '@/lib/queries';
 import { Film } from '@/lib/types';
 import { Accordion, AccordionButton, AccordionItem, AccordionPanel } from '@chakra-ui/accordion';
-import { Box, SimpleGrid, VStack, HStack, Button } from '@chakra-ui/react';
+import { Box, SimpleGrid, VStack, HStack, Button, Text } from '@chakra-ui/react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Album from '@/components/Album';
 import Image from '@/components/Image';
@@ -9,6 +9,10 @@ import { useRouter } from 'next/router';
 import { RichText } from 'prismic-reactjs';
 import Carousel from '@/components/Carousel/Carousel';
 import Critic from '@/components/Critic';
+import FilmText from '@/components/FilmText';
+import TimeCounter from '@/components/TimeCounter';
+import useSeconds from '@/lib/useSeconds';
+import { isAfter } from 'date-fns';
 
 type FilmPageProps = {
   film: Film;
@@ -16,6 +20,11 @@ type FilmPageProps = {
 
 const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
   const { back } = useRouter();
+  const now = useSeconds();
+  const today = new Date();
+  const hasStarted = !data.startdate || !isAfter(new Date(data.startdate), today);
+  const hasEnded = !!data.enddate && !isAfter(new Date(data.enddate), today);
+
   const tabs = [
     { label: 'Trailer', children: <div /> },
     { label: 'Crítica', children: <Critic /> },
@@ -45,7 +54,41 @@ const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
             )}
           </Album>
         </VStack>
-        {data.title && <RichText render={data.title} />}
+        <VStack align="flex-start" spacing={8} p={8} color="gray.900" fontSize="md">
+          {data.title && (
+            <Text
+              as="h1"
+              fontSize="6xl"
+              fontWeight="bold"
+              letterSpacing="tight"
+              textTransform="uppercase"
+              lineHeight="1"
+            >
+              <RichText render={data.title} />
+            </Text>
+          )}
+          <Box>
+            <RichText render={data.description} />
+          </Box>
+          <Box>
+            {data.director && <FilmText label="Direção">{data.director}</FilmText>}{' '}
+            {data.year && <FilmText label="Ano">{data.year}</FilmText>}{' '}
+            {data.duration && <FilmText label="Dur.">{data.duration}’</FilmText>}{' '}
+          </Box>
+
+          {!hasStarted && data.startdate && (
+            <Box whiteSpace="nowrap">
+              <FilmText label="Disponível em" />
+              <TimeCounter from={now} to={new Date(data.startdate)} />
+            </Box>
+          )}
+          {hasStarted && !hasEnded && data.enddate && (
+            <Box whiteSpace="nowrap">
+              <FilmText label="Disponível por" />
+              <TimeCounter from={new Date(data.enddate)} to={now} />
+            </Box>
+          )}
+        </VStack>
       </Box>
 
       <Accordion bgImage={`url(${data.image?.url})`} bgSize="50vw auto" bgAttachment="fixed">

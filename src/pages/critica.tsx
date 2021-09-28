@@ -26,7 +26,7 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
         <Box py={16} textAlign="center">
           <DiscoHeading>{pageTitle}</DiscoHeading>
         </Box>
-        <SimpleGrid gap={8} columns={{ base: 1, md: 2, lg: 4 }}>
+        <SimpleGrid columnGap={8} rowGap={16} columns={{ base: 1, md: 2, lg: 4 }}>
           {data.text && (
             <Box fontSize="md">
               <RichText render={data.text} />
@@ -68,7 +68,7 @@ const ReviewBook: React.VFC<ReviewBookProps> = ({ image, year, pdf, audiobook })
           </Box>
         )}
       </Box>
-      <Text mt={8} textAlign="center" as="h3" color="pink.800" fontSize="4xl">
+      <Text mt={8} textAlign="center" as="h3" color="pink.600" fontSize="4xl">
         {year}
       </Text>
       <HStack spacing={4} justify="center">
