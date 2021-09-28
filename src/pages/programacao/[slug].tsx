@@ -13,6 +13,7 @@ import FilmText from '@/components/FilmText';
 import TimeCounter from '@/components/TimeCounter';
 import useSeconds from '@/lib/useSeconds';
 import { isAfter } from 'date-fns';
+import SEO from '@/components/SEO';
 
 type FilmPageProps = {
   film: Film;
@@ -36,6 +37,7 @@ const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
 
   return (
     <SimpleGrid columns={{ base: 1, md: 2 }}>
+      <SEO title={data.seo_title} desc={data.seo_desc} imageUrl={data.seo_img?.url} />
       <Box>
         <VStack bg={data.bgcolor?.replace('-', '.')} p={8}>
           <HStack justify="flex-start" w="100%">
