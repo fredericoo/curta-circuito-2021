@@ -9,6 +9,7 @@ export const Button = {
       color: 'gray.100',
       _hover: { boxShadow: 'discoSmall', transform: 'translateY(-.6rem)' },
       _active: { transform: 'none', boxShadow: 'none' },
+      _disabled: { pointerEvents: 'none' },
     },
     secondary: {
       color: 'gray.900',
@@ -16,6 +17,7 @@ export const Button = {
       borderColor: 'pink.600',
       _hover: { boxShadow: 'discoSmall', transform: 'translateY(-.6rem)' },
       _active: { transform: 'none', boxShadow: 'none' },
+      _disabled: { pointerEvents: 'none' },
     },
   },
   sizes: {

@@ -32,7 +32,7 @@ const NavbarMobile: React.VFC<NavbarProps> = ({ menuItems }) => {
           {menuItems.map(({ label, path }) => (
             <Link key={path + label} href={path} passHref>
               <Button
-                pb={`calc(${asPath === path ? 0.75 : 1.5}em + env(safe-area-inset-bottom))`}
+                pb={`calc(${asPath === path ? 1 : 2}em + env(safe-area-inset-bottom))`}
                 display="block"
                 borderBottomRadius="none"
                 borderTopRadius="xl"
