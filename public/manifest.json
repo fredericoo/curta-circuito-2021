@@ -1,7 +1,13 @@
 {
   "name": "Curta Circuito 2021",
-  "short_name": "Curta Circuito 2021",
+  "short_name": "CC 2021",
   "icons": [
+    {
+      "src": "/img/favicon-228.png",
+      "sizes": "228x228",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "/img/favicon.png",
       "sizes": "512x512",

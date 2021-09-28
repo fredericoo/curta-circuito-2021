@@ -8,14 +8,14 @@ const NavbarDesktop: React.VFC<NavbarProps> = ({ menuItems }) => {
   const { asPath } = useRouter();
   return (
     <Box as="nav" bg="white">
-      <Container display="flex" maxW="container.xl" px={4} pt={4} justifyContent="center" lignItems="flex-end">
+      <Container display="flex" maxW="container.xl" px={4} pt={4} justifyContent="center" alignItems="flex-end">
         <Link href="/" passHref>
           <Box as="a" mb="-2%" zIndex="sticky">
             <Logo height={'92px'} />
           </Box>
         </Link>
 
-        <HStack flexGrow={1} justify="flex-end" spacing={0}>
+        <HStack flexGrow={1} justify="flex-end">
           {menuItems.map(({ label, path }) => (
             <Link key={path + label} href={path} passHref>
               <Button

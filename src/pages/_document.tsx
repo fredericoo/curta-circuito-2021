@@ -7,9 +7,6 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link rel="stylesheet" href="https://use.typekit.net/btq2mft.css" />
-          <meta name="viewport" content="viewport-fit=cover" />
-
-          <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0" />
           <meta name="theme-color" content="#FF47AC" />
           <link rel="manifest" href="/manifest.json" />
           <meta name="copyright" content="Penumbra Design" />
@@ -22,6 +19,7 @@ class MyDocument extends Document {
           <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
           <link rel="icon" href="/img/favicon.png" />
+          <link rel="apple-touch-icon" href="/img/favicon.png" />
         </Head>
         <body>
           <Main />
