@@ -120,6 +120,7 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
               whileTap={isCurrent ? 'hold' : 'tap'}
               onTapStart={isCurrent ? () => setIsPaused(true) : undefined}
               onTap={isCurrent ? () => setIsPaused(false) : undefined}
+              onTapCancel={isCurrent ? () => setIsPaused(false) : undefined}
               exit="exit"
               mixBlendMode={isCurrent ? 'normal' : 'multiply'}
               bgImage={`linear-gradient(-45deg, rgba(0,0,0,0), rgba(0,0,0,0.25)), linear-gradient(0deg, ${bgcolor}, ${bgcolor})`}

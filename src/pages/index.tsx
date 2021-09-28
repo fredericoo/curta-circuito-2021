@@ -2,43 +2,58 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import orderFilms from '@/lib/orderFilms';
 import { getAllFilms, getPage } from '@/lib/queries';
-import { Config, Film } from '@/lib/types';
+import { Config, Film, PrismicImage } from '@/lib/types';
 import FilmsFlicker from '@/views/FilmsFlicker/FilmsFlicker';
 import { Container, SimpleGrid, GridItem, Text } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
+import { RichText, RichTextBlock } from 'prismic-reactjs';
 
 type HomeProps = {
+  data?: {
+    title: RichTextBlock[];
+    text: RichTextBlock[];
+    seo_title?: string;
+    seo_desc?: string;
+    seo_img?: PrismicImage;
+  };
   films: Film[];
-  config: Config;
+  config?: Config;
 };
 
-const Home: React.VFC<HomeProps> = ({ films, config }) => (
+const Home: React.VFC<HomeProps> = ({ data, films, config }) => (
   <>
     <Container maxW="container.xl" pt={{ md: 16 }}>
-      <SEO />
+      <SEO title={data?.seo_title} desc={data?.seo_desc} imageUrl={data?.seo_img?.url} />
       <SimpleGrid columns={{ base: 1, md: 3 }} gap={8} alignItems="center">
-        <GridItem gridRow={{ base: 2, md: 'auto' }}>
-          <Text fontSize="md" color="pink.600">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum, rem eum. Quia, deserunt placeat magni
-            obcaecati nisi ipsa repellendus illo commodi aspernatur consectetur animi repellat error quo tempora, sint
-            magnam.
-          </Text>
+        <GridItem gridRow={{ base: 2, md: 'auto' }} color="pink.600">
+          {data?.title && (
+            <Text as="h1" fontSize="3xl" fontWeight="bold" letterSpacing="tight">
+              {RichText.render(data.title)}
+            </Text>
+          )}
+          {data?.text && (
+            <Text fontSize="md">
+              <RichText render={data.text} />
+            </Text>
+          )}
         </GridItem>
         <GridItem colSpan={2}>
           <FilmsFlicker films={orderFilms(films)} />
         </GridItem>
       </SimpleGrid>
     </Container>
-    <Footer {...config} />
+    {config && <Footer {...config} />}
   </>
 );
 
 export const getStaticProps: GetStaticProps = async () => {
   const films = await getAllFilms();
+  const { data } = await getPage('home');
   const { data: config } = await getPage('config');
 
   return {
     props: {
+      data,
       films,
       config,
     },

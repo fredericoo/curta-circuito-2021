@@ -37,7 +37,7 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
           ))}
         </SimpleGrid>
       </Container>
-      <Footer {...config} />
+      {config && <Footer {...config} />}
     </>
   );
 };

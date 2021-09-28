@@ -23,7 +23,7 @@ type Props = {
     seo_desc?: string;
     seo_img?: PrismicImage;
   };
-  config: Config;
+  config?: Config;
 };
 
 const MotionBox = motion(Box);
@@ -87,7 +87,7 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
           ))}
         </SimpleGrid>
       </Container>
-      <Footer {...config} />
+      {config && <Footer {...config} />}
     </Box>
   );
 };

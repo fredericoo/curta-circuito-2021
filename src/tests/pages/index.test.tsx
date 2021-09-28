@@ -22,7 +22,7 @@ describe(`<Home />`, () => {
   });
 
   it(`should render`, () => {
-    const { container } = render(<Home films={[]} config={{}} />);
+    const { container } = render(<Home films={[]} />);
     expect(container).toBeTruthy();
   });
 });
