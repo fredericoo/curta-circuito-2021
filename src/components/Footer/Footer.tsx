@@ -13,7 +13,7 @@ const Footer: React.VFC<Props> = ({ staff, sponsor }) => {
 
   return (
     <Container maxW="container.xl" pt={8} color="gray.100">
-      <Box bg="purple.800" p={8} borderTopRadius="1.5rem" textAlign="center">
+      <Box bg="purple.800" p={8} pb={{ base: 32, md: 0 }} borderTopRadius="1.5rem" textAlign="center">
         <Box>
           {staff?.map(({ role, name }) => (
             <FilmText key={`${role}-${name}`} label={role || ''}>

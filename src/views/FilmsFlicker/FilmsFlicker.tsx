@@ -59,9 +59,9 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
   const hasEnded = !!data.enddate && !isAfter(new Date(data.enddate), today);
 
   return (
-    <SimpleGrid columns={[1, 2]} gap={8} alignItems="center">
+    <SimpleGrid columns={[1, 2]} gap={{ base: 0, md: 8 }} alignItems="center" mt={{ base: -16, md: 0 }}>
       <AlbumFlicker albums={films} albumCount={5} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
-      <Box fontSize="md">
+      <Box fontSize="md" mt={{ base: -4, md: 0 }} userSelect="none">
         <Box overflow="hidden" position="relative">
           <AnimatePresence>
             <PrompterText mb={2} key={`${film.uid}-date`}>
