@@ -24,8 +24,8 @@ const Home: React.VFC<HomeProps> = ({ data, films, config }) => (
   <>
     <Container maxW="container.xl" pt={{ md: 16 }}>
       <SEO title={data?.seo_title} desc={data?.seo_desc} imageUrl={data?.seo_img?.url} />
-      <SimpleGrid columns={{ base: 1, md: 3 }} gap={8} alignItems="center">
-        <GridItem gridRow={{ base: 2, md: 'auto' }} color="pink.600">
+      <SimpleGrid columns={{ base: 1, lg: 3 }} gap={8} alignItems="center">
+        <GridItem gridRow={{ base: 2, lg: 'auto' }} color="pink.600">
           {data?.title && (
             <Text as="h1" fontSize="3xl" fontWeight="bold" letterSpacing="tight">
               {RichText.render(data.title)}

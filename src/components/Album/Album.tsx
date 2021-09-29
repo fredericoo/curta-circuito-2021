@@ -5,9 +5,7 @@ import { motion } from 'framer-motion';
 export const MotionBox = motion(Box);
 const Album = styled(MotionBox, {
   baseStyle: {
-    borderRadius: '5%',
     transformOrigin: 'left center',
-    overflow: 'hidden',
   },
 });
 

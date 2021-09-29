@@ -1,10 +1,11 @@
 import { Box } from '@chakra-ui/layout';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import Image from 'next/image';
 import { Film } from '@/lib/types';
+import Image from '@/components/Image';
 import Album from '@/components/Album';
 import { RichText } from 'prismic-reactjs';
+import vinyl from '../../../public/img/vinyl.png';
 
 type VariantCallback = (args: {
   direction: number;
@@ -16,31 +17,31 @@ const variants: Record<string, VariantCallback> = {
   enter: ({ index, albumCount }) => ({
     transform: `rotateX(-30deg) rotateY(${-20 + (albumCount - 0 - index) * 20}deg) rotateZ(0) translateX(${
       20 - 30 * Math.cos(albumCount + 1 - index)
-    }%) translateY(${albumCount * 20 - 15 * (albumCount - 0 - index)}%) translateZ(30px)`,
+    }%) translateY(${albumCount * 20 - 15 * (albumCount - 0 - index)}%) translateZ(30px) scale(1)`,
     opacity: 0,
   }),
   visible: ({ index, albumCount }) => ({
     transform: `rotateX(-30deg) rotateY(${-20 + (albumCount - 1 - index) * 20}deg) rotateZ(0) translateX(${
       20 - 30 * Math.cos(albumCount - index)
-    }%) translateY(${albumCount * 20 - 15 * (albumCount - 1 - index)}%) translateZ(30px)`,
+    }%) translateY(${albumCount * 20 - 15 * (albumCount - 1 - index)}%) translateZ(30px) scale(1)`,
     opacity: 1,
   }),
   tap: ({ index, albumCount }) => ({
     transform: `rotateX(-30deg) rotateY(${-20 + (albumCount - 1 - index) * 20}deg) rotateZ(0) translateX(${
       20 - 30 * Math.cos(albumCount - index)
-    }%) translateY(${albumCount * 20 - 15 * (albumCount - 1 - index) - 20}%) translateZ(30px)`,
+    }%) translateY(${albumCount * 20 - 15 * (albumCount - 1 - index) - 20}%) translateZ(30px) scale(1)`,
     opacity: 1,
   }),
   hold: ({ index, albumCount }) => ({
     transform: `rotateX(-30deg) rotateY(${-20 + (albumCount - 1 - index) * 20}deg) rotateZ(0) translateX(${
-      20 - 30 * Math.cos(albumCount - index) + 20
-    }%) translateY(${albumCount * 20 - 15 * (albumCount - 1 - index)}%) translateZ(30px)`,
+      20 - 30 * Math.cos(albumCount - index)
+    }%) translateY(${albumCount * 20 - 15 * (albumCount - 1 - index)}%) translateZ(30px) scale(0.95)`,
     opacity: 1,
   }),
   exit: ({ index, albumCount }) => ({
     transform: `rotateX(-30deg) rotateY(${-20 + (albumCount - 2 - index) * 20}deg) rotateZ(0) translateX(${
       20 - 30 * Math.cos(albumCount - 1 - index)
-    }%) translateY(${albumCount * 20 - 15 * (albumCount - 2 - index)}%) translateZ(30px)`,
+    }%) translateY(${albumCount * 20 - 15 * (albumCount - 2 - index)}%) translateZ(30px) scale(1)`,
     opacity: 0,
   }),
 };
@@ -123,16 +124,22 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
               onTapCancel={isCurrent ? () => setIsPaused(false) : undefined}
               exit="exit"
               mixBlendMode={isCurrent ? 'normal' : 'multiply'}
-              bgImage={`linear-gradient(-45deg, rgba(0,0,0,0), rgba(0,0,0,0.25)), linear-gradient(0deg, ${bgcolor}, ${bgcolor})`}
               onClick={isCurrent ? undefined : flickForward}
+              bgImage={`linear-gradient(-45deg, rgba(0,0,0,0), rgba(0,0,0,0.25)), linear-gradient(0deg, ${bgcolor}, ${bgcolor})`}
               userSelect="none"
+              borderRadius="5%"
             >
               <Box
-                position="relative"
                 pointerEvents="none"
                 opacity={isCurrent ? 1 : 0}
                 transition="all .6s ease-out"
                 _hover={{ opacity: 1 }}
+                overflow="hidden"
+                borderRadius="5%"
+                zIndex="2"
+                position="absolute"
+                w="100%"
+                h="100%"
               >
                 {isCurrent && !isPaused && <AutoFlickBar />}
                 {cover && (
@@ -145,6 +152,22 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
                   />
                 )}
               </Box>
+
+              {isCurrent && (
+                <MotionBox
+                  pointerEvents="none"
+                  initial={{ transform: 'none' }}
+                  animate={{ transform: 'translateX(33%)', transition: { delay: 0.3 } }}
+                  position="absolute"
+                  top="0"
+                  w="100%"
+                  h="100%"
+                  borderRadius="full"
+                  zIndex="1"
+                >
+                  <Image src={vinyl} placeholder="blur" alt="" layout="responsive" bg="transparent" />
+                </MotionBox>
+              )}
             </Album>
           );
         })}

@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 const mockMenuItems = [
   { label: 'Cadernos de Crítica', path: '/critica' },
   { label: 'Sobre', path: '/sobre' },
+  { label: 'Convidados', path: '/convidados' },
   { label: 'Programação', path: '/' },
 ];
 

@@ -3,7 +3,7 @@ import FilmText from '@/components/FilmText';
 import { getPage } from '@/lib/queries';
 import { Config, PrismicImage } from '@/lib/types';
 import { Box, Container, SimpleGrid } from '@chakra-ui/layout';
-import { styled, Text, VStack } from '@chakra-ui/react';
+import { styled, VStack } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
 import { RichText, RichTextBlock } from 'prismic-reactjs';
 import Image from '@/components/Image';
@@ -11,14 +11,12 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { motion } from 'framer-motion';
 
-type Reviewer = { image: PrismicImage; name: RichTextBlock[]; bio: RichTextBlock[] };
 type Props = {
   data: {
     title: RichTextBlock[];
     text: RichTextBlock[];
     author: { role: string; name: string }[];
     sticker_images: { image: PrismicImage }[];
-    reviewer: Reviewer[];
     seo_title?: string;
     seo_desc?: string;
     seo_img?: PrismicImage;
@@ -78,43 +76,8 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
             ))}
           </Box>
         </SimpleGrid>
-        <Box py={16} textAlign="center">
-          <DiscoHeading>Críticos</DiscoHeading>
-        </Box>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} columnGap={8} rowGap={16}>
-          {data.reviewer?.map((props, i) => (
-            <ReviewerBox key={i} {...props} />
-          ))}
-        </SimpleGrid>
       </Container>
       {config && <Footer {...config} />}
-    </Box>
-  );
-};
-
-const ReviewerBox: React.VFC<Reviewer> = ({ image, name, bio }) => {
-  return (
-    <Box>
-      <Box display="flex" justifyContent="center" bg="purple.600" borderTopRadius="1rem" pt={8} px={8}>
-        {image && (
-          <Box mb={-8} borderRadius="1rem" overflow="hidden" w="80%">
-            <Image
-              src={image.url}
-              width={image.dimensions?.width}
-              height={image.dimensions?.height}
-              alt={RichText.asText(name)}
-              layout="responsive"
-              sizes="512px"
-            />
-          </Box>
-        )}
-      </Box>
-      <Text fontFamily="condensed" textTransform="uppercase" fontWeight="bold" fontSize="xl" mt={10} as="h3">
-        {RichText.asText(name)}
-      </Text>
-      <BodyText fontSize="1rem">
-        <RichText render={bio} />
-      </BodyText>
     </Box>
   );
 };

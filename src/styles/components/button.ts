@@ -12,6 +12,7 @@ export const Button = {
       _disabled: { pointerEvents: 'none' },
     },
     secondary: {
+      bg: 'gray.100',
       color: 'gray.900',
       border: '1px solid',
       borderColor: 'pink.600',

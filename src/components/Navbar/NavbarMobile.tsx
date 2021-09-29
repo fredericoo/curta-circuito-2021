@@ -8,7 +8,7 @@ const NavbarMobile: React.VFC<NavbarProps> = ({ menuItems }) => {
   const { asPath } = useRouter();
   return (
     <>
-      <Box as="aside" bg="pink.400" zIndex="popover" transform="translateZ(1px)">
+      <Box as="aside" bg="pink.400" zIndex="modal" transform="translateZ(1000px)">
         <Container display="flex" maxW="container.xl" px={4} pt={4} justifyContent="center" lignItems="flex-end">
           <Link href="/" passHref>
             <Box as="a" mb="-2%" zIndex="sticky">
