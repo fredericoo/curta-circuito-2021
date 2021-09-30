@@ -1,7 +1,7 @@
 import { ChakraProvider, Box } from '@chakra-ui/react';
-import { AppComponent } from 'next/dist/next-server/lib/router/router';
 import { theme } from '@/styles/theme';
 import Navbar from '@/components/Navbar';
+import { AppComponent } from 'next/dist/shared/lib/router/router';
 
 const mockMenuItems = [
   { label: 'Cadernos de Crítica', path: '/critica' },
