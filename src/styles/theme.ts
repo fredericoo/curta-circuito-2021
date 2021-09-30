@@ -13,7 +13,7 @@ export const theme = extendTheme({
     body: 'futura-pt, Futura, Century Gothic, sans-serif',
     condensed: 'futura-pt-condensed, Futura, Century Gothic, sans-serif',
   },
-  fontSizes: {},
+  fontSizes: { md: '1.1rem' },
   colors,
   shadows,
   components: { Button },

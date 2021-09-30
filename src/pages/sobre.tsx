@@ -14,12 +14,14 @@ import { motion } from 'framer-motion';
 type Props = {
   data: {
     title: RichTextBlock[];
+    contacttitle: RichTextBlock[];
     text: RichTextBlock[];
     author: { role: string; name: string }[];
     sticker_images: { image: PrismicImage }[];
     seo_title?: string;
     seo_desc?: string;
     seo_img?: PrismicImage;
+    contact?: { detail?: RichTextBlock[]; type?: string }[];
   };
   config?: Config;
 };
@@ -76,6 +78,19 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
                 </Box>
               </MotionBox>
             ))}
+          </Box>
+
+          <Box pt={16} gridColumn={{ md: '6/13' }}>
+            <DiscoHeading textAlign={{ base: 'center', md: 'left' }}>
+              {data.contacttitle ? RichText.asText(data.contacttitle) : 'Contato'}
+            </DiscoHeading>
+            <SimpleGrid columns={2} rowGap={4} pt={8} gridTemplateColumns="1fr 3fr">
+              {data.contact?.map(({ detail, type }) => (
+                <FilmText key={type} label={type || ''}>
+                  {detail && <RichText render={detail} />}
+                </FilmText>
+              ))}
+            </SimpleGrid>
           </Box>
         </SimpleGrid>
       </Container>
