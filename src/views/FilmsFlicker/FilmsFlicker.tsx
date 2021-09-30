@@ -4,14 +4,12 @@ import type { Film } from '@/lib/types';
 import { Box, Button, SimpleGrid, HStack, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import FilmText from '@/components/FilmText';
-import { isAfter } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
-import TimeCounter from '@/components/TimeCounter';
-import useSeconds from '@/lib/useSeconds';
 import { resolveDocumentURL } from '@/lib/queries';
 import Link from 'next/link';
 import { RichText } from 'prismic-reactjs';
 import format from '@/lib/dateTime';
+import FilmAvailability from '@/components/FilmAvailability';
 
 type Props = {
   films: Film[];
@@ -48,15 +46,10 @@ PrompterText.defaultProps = {
 
 const FilmsFlicker: React.VFC<Props> = ({ films }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const now = useSeconds();
-  const today = new Date();
 
   const film = films[selectedIndex];
   if (!film) return null;
   const data = film.data;
-
-  const hasStarted = !data.startdate || !isAfter(new Date(data.startdate), today);
-  const hasEnded = !!data.enddate && !isAfter(new Date(data.enddate), today);
 
   return (
     <SimpleGrid columns={{ lg: 2 }} gap={{ base: 0, lg: 8 }} alignItems="center" mt={{ base: -16, lg: 0 }}>
@@ -77,7 +70,11 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
           </AnimatePresence>
         </Box>
 
-        {data.title && <DiscoHeading key={`${film.uid}-title`}>{RichText.asText(data.title)}</DiscoHeading>}
+        {data.title && (
+          <DiscoHeading sx={{ hyphens: 'auto' }} key={`${film.uid}-title`} maxW="90%">
+            {RichText.asText(data.title)}
+          </DiscoHeading>
+        )}
 
         <Box overflow="hidden" position="relative">
           <AnimatePresence>
@@ -88,29 +85,15 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
             </PrompterText>
           </AnimatePresence>
         </Box>
-        <HStack spacing={8}>
+        <HStack wrap="wrap" spacing={0}>
           {film && (
             <Link href={resolveDocumentURL(film)} passHref>
-              <Button as="a" variant="secondary" rightIcon={<PlusIcon />}>
+              <Button as="a" variant="secondary" rightIcon={<PlusIcon />} mr={4}>
                 Ver mais
               </Button>
             </Link>
           )}
-          <Button isDisabled={!hasStarted || hasEnded} variant="primary">
-            Assistir
-          </Button>
-          {!hasStarted && data.startdate && (
-            <Box whiteSpace="nowrap">
-              <FilmText label="Disponível em" />
-              <TimeCounter from={now} to={new Date(data.startdate)} />
-            </Box>
-          )}
-          {hasStarted && !hasEnded && data.enddate && (
-            <Box whiteSpace="nowrap">
-              <FilmText label="Disponível por" />
-              <TimeCounter from={new Date(data.enddate)} to={now} />
-            </Box>
-          )}
+          <FilmAvailability startdate={data.startdate} enddate={data.enddate} />
         </HStack>
       </Box>
     </SimpleGrid>

@@ -4,7 +4,7 @@ import orderFilms from '@/lib/orderFilms';
 import { getAllFilms, getPage } from '@/lib/queries';
 import { Config, Film, PrismicImage } from '@/lib/types';
 import FilmsFlicker from '@/views/FilmsFlicker/FilmsFlicker';
-import { Container, SimpleGrid, GridItem, Text } from '@chakra-ui/react';
+import { Container, SimpleGrid, GridItem, Text, Box } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
 import { RichText, RichTextBlock } from 'prismic-reactjs';
 
@@ -21,7 +21,7 @@ type HomeProps = {
 };
 
 const Home: React.VFC<HomeProps> = ({ data, films, config }) => (
-  <>
+  <Box maxW="100vw" overflow="hidden">
     <Container maxW="container.xl" pt={{ md: 16 }}>
       <SEO title={data?.seo_title} desc={data?.seo_desc} imageUrl={data?.seo_img?.url} />
       <SimpleGrid columns={{ base: 1, lg: 3 }} gap={8} alignItems="center">
@@ -43,7 +43,7 @@ const Home: React.VFC<HomeProps> = ({ data, films, config }) => (
       </SimpleGrid>
     </Container>
     {config && <Footer {...config} />}
-  </>
+  </Box>
 );
 
 export const getStaticProps: GetStaticProps = async () => {

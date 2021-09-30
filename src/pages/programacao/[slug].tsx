@@ -59,7 +59,7 @@ const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
     tabs.push({ label: 'Fotos', children: <Carousel photos={data.carousel.map(({ image }) => image)} /> });
 
   return (
-    <SimpleGrid columns={{ base: 1, lg: 2 }}>
+    <SimpleGrid columns={{ base: 1, lg: 2 }} maxW="100%" overflow="hidden">
       <SEO title={data.seo_title} desc={data.seo_desc} imageUrl={data.seo_img?.url} />
       <Box>
         <Box bg={data.bgcolor} p={8}>
@@ -70,7 +70,13 @@ const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
               </svg>
             </Button>
           </HStack>
-          <Box w="350px" h="350px" mb={-16} mx="auto" position="relative">
+          <Box
+            w={{ base: '200px', md: '350px' }}
+            h={{ base: '200px', md: '350px' }}
+            mb={-16}
+            mx="auto"
+            position="relative"
+          >
             {data.cover && (
               <Box position="absolute" w="100%" h="100%" borderRadius="5%" overflow="hidden" zIndex="2">
                 <Image
@@ -103,11 +109,12 @@ const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
               {data.title && (
                 <Text
                   as="h1"
-                  fontSize="6xl"
+                  fontSize={{ base: '4xl', md: '6xl' }}
                   fontWeight="bold"
                   letterSpacing="tighter"
                   textTransform="uppercase"
                   lineHeight="1"
+                  mb={4}
                 >
                   {RichText.asText(data.title)}
                 </Text>

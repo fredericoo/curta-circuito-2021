@@ -1,6 +1,6 @@
 import useSeconds from '@/lib/useSeconds';
 import { isAfter } from 'date-fns';
-import { Box } from '@chakra-ui/react';
+import { Box, Button, HStack } from '@chakra-ui/react';
 import FilmText from '@/components/FilmText';
 import TimeCounter from '@/components/TimeCounter';
 
@@ -17,18 +17,29 @@ const FilmAvailability: React.VFC<FilmAvailabilityProps> = ({ startdate, enddate
 
   if (!hasStarted && startdate)
     return (
-      <Box whiteSpace="nowrap">
-        <FilmText label="Disponível em" />
-        <TimeCounter from={now} to={new Date(startdate)} />
-      </Box>
+      <HStack wrap="wrap" spacing={4}>
+        <Button isDisabled={!hasStarted || hasEnded} variant="primary">
+          Assistir
+        </Button>
+
+        <Box whiteSpace="nowrap">
+          <FilmText label="Disponível em" />
+          <TimeCounter from={now} to={new Date(startdate)} />
+        </Box>
+      </HStack>
     );
 
   if (hasStarted && !hasEnded && enddate)
     return (
-      <Box whiteSpace="nowrap">
-        <FilmText label="Disponível por" />
-        <TimeCounter from={new Date(enddate)} to={now} />
-      </Box>
+      <HStack wrap="wrap" spacing={4}>
+        <Button isDisabled={!hasStarted || hasEnded} variant="primary">
+          Assistir
+        </Button>
+        <Box whiteSpace="nowrap">
+          <FilmText label="Disponível por" />
+          <TimeCounter from={new Date(enddate)} to={now} />
+        </Box>
+      </HStack>
     );
 
   return null;

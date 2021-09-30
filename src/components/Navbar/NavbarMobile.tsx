@@ -22,16 +22,20 @@ const NavbarMobile: React.VFC<NavbarProps> = ({ menuItems }) => {
         as="nav"
         position="fixed"
         bottom="0"
-        left="4"
-        right="4"
+        w="100%"
+        px={4}
+        left={0}
+        right={0}
         zIndex="overlay"
         overflow="hidden"
         fontWeight="normal"
+        overflowX="scroll"
       >
-        <HStack spacing={1} overflowX="scroll" justify="center" align="flex-end">
-          {menuItems.map(({ label, path }) => (
+        <HStack spacing={1} align="flex-end">
+          {[...menuItems].reverse().map(({ label, path }) => (
             <Link key={path + label} href={path} passHref>
               <Button
+                flexShrink={0}
                 pb={`calc(${asPath === path ? 1 : 2}em + env(safe-area-inset-bottom))`}
                 display="block"
                 borderBottomRadius="none"
