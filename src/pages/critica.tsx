@@ -49,8 +49,8 @@ type ReviewBookProps = {
   audiobook?: PrismicMediaLink;
 };
 const ReviewBook: React.VFC<ReviewBookProps> = ({ image, year, pdf, audiobook }) => {
-  const audiobookUrl = audiobook ? resolveDocumentURL(audiobook) : undefined;
-  const pdfUrl = pdf ? resolveDocumentURL(pdf) : undefined;
+  const audiobookUrl = audiobook?.url ? resolveDocumentURL(audiobook) : undefined;
+  const pdfUrl = pdf?.url ? resolveDocumentURL(pdf) : undefined;
 
   return (
     <Box>
