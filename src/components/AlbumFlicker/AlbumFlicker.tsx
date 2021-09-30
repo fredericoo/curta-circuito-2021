@@ -53,7 +53,7 @@ type Props = {
   setSelectedIndex: (index: number) => void;
 };
 
-const autoFlickDelay = 5000;
+const autoFlickDelay = 15000;
 
 const MotionBox = motion(Box);
 const AutoFlickBar = () => {
@@ -68,7 +68,7 @@ const AutoFlickBar = () => {
       zIndex={2}
       borderRadius="2px"
       initial={{ width: '0%' }}
-      animate={{ width: '90%', transition: { duration: autoFlickDelay / 1000 } }}
+      animate={{ width: '90%', transition: { ease: 'linear', duration: autoFlickDelay / 1000 } }}
     />
   );
 };
@@ -120,18 +120,17 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
               animate="visible"
               whileTap={isCurrent ? 'hold' : 'tap'}
               onTapStart={isCurrent ? () => setIsPaused(true) : undefined}
-              onTap={isCurrent ? () => setIsPaused(false) : undefined}
-              onTapCancel={isCurrent ? () => setIsPaused(false) : undefined}
+              onTap={isCurrent ? () => setIsPaused(false) : flickForward}
+              onTapCancel={isCurrent ? () => setIsPaused(false) : flickForward}
               exit="exit"
               mixBlendMode={isCurrent ? 'normal' : 'multiply'}
-              onClick={isCurrent ? undefined : flickForward}
               bgImage={`linear-gradient(-45deg, rgba(0,0,0,0), rgba(0,0,0,0.25)), linear-gradient(0deg, ${bgcolor}, ${bgcolor})`}
               userSelect="none"
               borderRadius="5%"
             >
               <Box
                 pointerEvents="none"
-                opacity={isCurrent ? 1 : 0}
+                opacity={Math.pow((i + 1) / albumCount, 3)}
                 transition="all .6s ease-out"
                 _hover={{ opacity: 1 }}
                 overflow="hidden"
