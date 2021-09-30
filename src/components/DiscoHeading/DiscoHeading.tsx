@@ -1,5 +1,5 @@
 import shadows from '@/styles/shadows';
-import { Text } from '@chakra-ui/react';
+import { ComponentWithAs, Text, TextProps } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 
 const MotionText = motion(Text);
 
-const DiscoHeading: React.VFC<Props> = ({ children }) => (
+const DiscoHeading: ComponentWithAs<'p', Omit<TextProps, 'children'> & Props> = ({ children, ...props }) => (
   <MotionText
     fontWeight="800"
     textTransform="uppercase"
@@ -30,6 +30,7 @@ const DiscoHeading: React.VFC<Props> = ({ children }) => (
       textShadow: shadows.discoOff,
       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
     }}
+    {...props}
   >
     {children}
   </MotionText>

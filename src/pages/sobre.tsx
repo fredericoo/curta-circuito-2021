@@ -51,7 +51,9 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
             )}
           </Box>
           <VStack align="initial" spacing={8} py={16} gridColumn={{ md: '2 / 10', lg: '3 / 9' }}>
-            <DiscoHeading>{data.title ? RichText.asText(data.title) : 'Sobre'}</DiscoHeading>
+            <DiscoHeading textAlign={{ base: 'center', md: 'left' }}>
+              {data.title ? RichText.asText(data.title) : 'Sobre'}
+            </DiscoHeading>
             <Box>
               {data.author?.map(({ role, name }) => (
                 <FilmText key={name} label={role}>

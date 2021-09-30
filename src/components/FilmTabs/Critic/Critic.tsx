@@ -16,7 +16,7 @@ const Critic: React.VFC<CriticProps> = ({ title, text, book, link, image }) => (
   <SimpleGrid columns={{ lg: 2 }} gap={8} pt={4} px={4} pb={8} bg="gray.200">
     <Box>
       {title && (
-        <Text as="h3" color="pink.400" fontSize="3xl" mb={4} lineHeight="1.2">
+        <Text as="h3" color="pink.400" fontSize="2xl" mb={4} lineHeight="1.2">
           {RichText.asText(title)}
         </Text>
       )}

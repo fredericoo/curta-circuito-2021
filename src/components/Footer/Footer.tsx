@@ -31,7 +31,7 @@ const Footer: React.VFC<Props> = ({ staff, sponsor }) => {
                     logo?.url && (
                       <Box
                         key={i}
-                        w={j + 1 === sponsorGroups.length && i + 1 === sponsors.length ? '256px' : '128px'}
+                        w={j + 1 === sponsorGroups.length && i + 1 === sponsors.length ? '228px' : '96px'}
                         p={4}
                       >
                         <Image
