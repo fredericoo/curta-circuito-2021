@@ -47,7 +47,7 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
             </Box>
           )}
         </Box>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} columnGap={8} rowGap={16}>
+        <SimpleGrid columns={{ base: 1, md: 3, lg: 3 }} columnGap={8} rowGap={16}>
           {data.guests?.map((props, i) => (
             <ReviewerBox bg="blue.600" key={i} {...props} />
           ))}

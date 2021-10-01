@@ -44,7 +44,7 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
     <Box overflow="hidden">
       <SEO title={data.seo_title} desc={data.seo_desc} imageUrl={data.seo_img?.url} />
       <Container maxW="container.xl" fontSize="md">
-        <SimpleGrid columns={{ base: 1, md: 12 }}>
+        <SimpleGrid columns={{ base: 1, md: 12 }} gap={8}>
           <Box gridColumn={{ md: '1/2', lg: '1/3' }} alignSelf="center">
             {leftSticker?.url && (
               <MotionBox drag whileHover={{ scale: 1.05 }} whileDrag={{ scale: 1.1 }} dragMomentum={false}>
@@ -73,9 +73,17 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
             </Box>
             <RichText render={data.text} />
           </VStack>
-          <Box pt={16} w={{ base: '80%', md: 'auto' }} gridColumn={{ md: '10/13', lg: '10/13' }}>
+          <Box pt={16} w={{ base: '80%', md: 'auto' }} gridColumn={{ md: '10/13', lg: '9/13' }}>
             {rightSticker?.url && (
-              <MotionBox drag whileHover={{ scale: 1.05 }} whileDrag={{ scale: 1.1 }} dragMomentum={false}>
+              <MotionBox
+                w="80%"
+                ml="auto"
+                mb={8}
+                drag
+                whileHover={{ scale: 1.05 }}
+                whileDrag={{ scale: 1.1 }}
+                dragMomentum={false}
+              >
                 <Box pointerEvents="none" transform={`rotate(15deg)`}>
                   <Image
                     src={rightSticker.url}
@@ -86,7 +94,18 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
                 </Box>
               </MotionBox>
             )}
-            {data.teaser?.url && <VideoPlayer src={data.teaser.url} width={1920} height={1080} />}
+            {data.teaser?.url && (
+              <MotionBox
+                drag
+                whileHover={{ scale: 1.05 }}
+                whileDrag={{ scale: 1.1 }}
+                dragMomentum={false}
+                border="20px solid"
+                borderColor="beige"
+              >
+                <VideoPlayer src={data.teaser.url} width={1920} height={1080} videoProps={{ controls: true }} />
+              </MotionBox>
+            )}
           </Box>
 
           {leftBottomSticker?.url && (
