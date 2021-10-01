@@ -1,7 +1,7 @@
 import DiscoHeading from '@/components/DiscoHeading';
 import FilmText from '@/components/FilmText';
 import { getPage } from '@/lib/queries';
-import { Config, PrismicImage } from '@/lib/types';
+import { Config, PrismicImage, PrismicMediaLink } from '@/lib/types';
 import { Box, Container, SimpleGrid } from '@chakra-ui/layout';
 import { styled, VStack } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
@@ -10,6 +10,7 @@ import Image from '@/components/Image';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { motion } from 'framer-motion';
+import VideoPlayer from '@/components/VideoPlayer';
 
 type Props = {
   data: {
@@ -18,6 +19,8 @@ type Props = {
     text: RichTextBlock[];
     author: { role: string; name: string }[];
     sticker_images: { image: PrismicImage }[];
+    stickers?: { image: PrismicImage }[];
+    teaser?: PrismicMediaLink;
     seo_title?: string;
     seo_desc?: string;
     seo_img?: PrismicImage;
@@ -30,23 +33,28 @@ const MotionBox = motion(Box);
 
 const AboutPage: React.VFC<Props> = ({ data, config }) => {
   if (!data) return null;
-  const image = data.sticker_images[2]?.image;
+
+  const rightSticker = data.sticker_images[0].image;
+  const leftSticker = data.sticker_images[1].image;
+
+  const leftBottomSticker = data.stickers?.[0].image;
+  const rightBottomSticker = data.stickers?.[1].image;
 
   return (
     <Box overflow="hidden">
       <SEO title={data.seo_title} desc={data.seo_desc} imageUrl={data.seo_img?.url} />
       <Container maxW="container.xl" fontSize="md">
         <SimpleGrid columns={{ base: 1, md: 12 }}>
-          <Box gridColumn={{ md: '1/2', lg: '1/2' }} alignSelf="center">
-            {image?.url && (
+          <Box gridColumn={{ md: '1/2', lg: '1/3' }} alignSelf="center">
+            {leftSticker?.url && (
               <MotionBox drag whileHover={{ scale: 1.05 }} whileDrag={{ scale: 1.1 }} dragMomentum={false}>
                 <Box pointerEvents="none" transform={`rotate(-15deg)`}>
                   <Image
                     bg="transparent"
-                    src={image.url}
-                    width={image.dimensions.width}
-                    height={image.dimensions.height}
-                    alt={image.alt}
+                    src={leftSticker.url}
+                    width={leftSticker.dimensions.width}
+                    height={leftSticker.dimensions.height}
+                    alt={leftSticker.alt}
                   />
                 </Box>
               </MotionBox>
@@ -66,21 +74,41 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
             <RichText render={data.text} />
           </VStack>
           <Box pt={16} w={{ base: '80%', md: 'auto' }} gridColumn={{ md: '10/13', lg: '10/13' }}>
-            {data.sticker_images?.slice(0, 2)?.map(({ image }, i) => (
-              <MotionBox drag whileHover={{ scale: 1.05 }} whileDrag={{ scale: 1.1 }} dragMomentum={false} key={i}>
-                <Box pointerEvents="none" transform={!!i ? `rotate(15deg)` : `rotate(-15deg)`}>
+            {rightSticker?.url && (
+              <MotionBox drag whileHover={{ scale: 1.05 }} whileDrag={{ scale: 1.1 }} dragMomentum={false}>
+                <Box pointerEvents="none" transform={`rotate(15deg)`}>
                   <Image
-                    src={image.url}
-                    width={image.dimensions.width}
-                    height={image.dimensions.height}
-                    alt={image.alt}
+                    src={rightSticker.url}
+                    width={rightSticker.dimensions.width}
+                    height={rightSticker.dimensions.height}
+                    alt={rightSticker.alt}
                   />
                 </Box>
               </MotionBox>
-            ))}
+            )}
+            {data.teaser?.url && <VideoPlayer src={data.teaser.url} width={1920} height={1080} />}
           </Box>
 
-          <Box pt={16} gridColumn={{ md: '6/13' }}>
+          {leftBottomSticker?.url && (
+            <MotionBox
+              drag
+              gridColumn={{ md: '2/5' }}
+              whileHover={{ scale: 1.05 }}
+              whileDrag={{ scale: 1.1 }}
+              dragMomentum={false}
+            >
+              <Box pointerEvents="none" transform={`rotate(-15deg)`}>
+                <Image
+                  src={leftBottomSticker.url}
+                  width={leftBottomSticker.dimensions.width}
+                  height={leftBottomSticker.dimensions.height}
+                  alt={leftBottomSticker.alt}
+                />
+              </Box>
+            </MotionBox>
+          )}
+
+          <Box pt={16} gridColumn={{ md: '6/10' }}>
             <DiscoHeading textAlign={{ base: 'center', md: 'left' }}>
               {data.contacttitle ? RichText.asText(data.contacttitle) : 'Contato'}
             </DiscoHeading>
@@ -92,6 +120,26 @@ const AboutPage: React.VFC<Props> = ({ data, config }) => {
               ))}
             </SimpleGrid>
           </Box>
+
+          {rightBottomSticker?.url && (
+            <MotionBox
+              drag
+              gridColumn={{ md: '10/13' }}
+              whileHover={{ scale: 1.05 }}
+              whileDrag={{ scale: 1.1 }}
+              dragMomentum={false}
+            >
+              <Box pointerEvents="none" transform={`rotate(30deg)`}>
+                <Image
+                  src={rightBottomSticker.url}
+                  width={rightBottomSticker.dimensions.width}
+                  height={rightBottomSticker.dimensions.height}
+                  alt={rightBottomSticker.alt}
+                  bg="transparent"
+                />
+              </Box>
+            </MotionBox>
+          )}
         </SimpleGrid>
       </Container>
       {config && <Footer {...config} />}
