@@ -71,7 +71,12 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
         </Box>
 
         {data.title && (
-          <DiscoHeading sx={{ hyphens: 'auto' }} key={`${film.uid}-title`} maxW="90%">
+          <DiscoHeading
+            wordBreak="break-word"
+            hyphens="auto"
+            key={`${film.uid}-title`}
+            maxW={{ base: '90%', md: '100%' }}
+          >
             {RichText.asText(data.title)}
           </DiscoHeading>
         )}

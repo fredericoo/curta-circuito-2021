@@ -30,6 +30,7 @@ const DiscoHeading: ComponentWithAs<'p', Omit<TextProps, 'children'> & Props> = 
       textShadow: shadows.discoOff,
       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
     }}
+    sx={{ wordWrap: 'break-word' }}
     {...props}
   >
     {children}
