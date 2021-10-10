@@ -45,6 +45,11 @@ const AboutPage: NextRoute<Props> = ({ data, config }) => {
       <SEO title={data.seo_title} desc={data.seo_desc} imageUrl={data.seo_img?.url} />
       <Container maxW="container.xl" fontSize="md">
         <SimpleGrid columns={{ base: 1, md: 12 }} gap={8}>
+          {data.teaser?.url && (
+            <Box gridColumn="1 / -1" borderBottomRadius="xl" overflow="hidden">
+              <VideoPlayer src={data.teaser.url} width={1920} height={1080} videoProps={{ controls: true }} />
+            </Box>
+          )}
           <Box gridColumn={{ md: '1/2', lg: '1/3' }} alignSelf="center">
             {leftSticker?.url && (
               <MotionBox drag whileHover={{ scale: 1.05 }} whileDrag={{ scale: 1.1 }} dragMomentum={false}>
@@ -60,7 +65,7 @@ const AboutPage: NextRoute<Props> = ({ data, config }) => {
               </MotionBox>
             )}
           </Box>
-          <VStack align="initial" spacing={8} py={16} gridColumn={{ md: '2 / 10', lg: '3 / 9' }}>
+          <VStack align="initial" spacing={8} py={8} gridColumn={{ md: '2 / 10', lg: '3 / 9' }}>
             <DiscoHeading textAlign={{ base: 'center', md: 'left' }}>
               {data.title ? RichText.asText(data.title) : 'Sobre'}
             </DiscoHeading>
@@ -92,18 +97,6 @@ const AboutPage: NextRoute<Props> = ({ data, config }) => {
                     alt={rightSticker.alt}
                   />
                 </Box>
-              </MotionBox>
-            )}
-            {data.teaser?.url && (
-              <MotionBox
-                drag
-                whileHover={{ scale: 1.05 }}
-                whileDrag={{ scale: 1.1 }}
-                dragMomentum={false}
-                border="20px solid"
-                borderColor="beige"
-              >
-                <VideoPlayer src={data.teaser.url} width={1920} height={1080} videoProps={{ controls: true }} />
               </MotionBox>
             )}
           </Box>
