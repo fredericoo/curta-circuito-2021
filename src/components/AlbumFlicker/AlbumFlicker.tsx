@@ -150,7 +150,7 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
           );
         })}
       </AnimatePresence>
-      <HStack position="absolute" bottom="0" w="100%" justify="flex-end">
+      <HStack position="absolute" bottom="1rem" w="100%" justify="flex-end">
         <Button bg="gray.200" onClick={flickBackward}>
           <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15 8.5L2 8.5M2 8.5L8.5 2M2 8.5L8.5 15" stroke="black" strokeLinecap="round" />
