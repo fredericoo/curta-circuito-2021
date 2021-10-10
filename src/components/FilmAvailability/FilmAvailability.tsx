@@ -1,9 +1,10 @@
 import useSeconds from '@/lib/useSeconds';
-import { isAfter } from 'date-fns';
-import { Box, Button, VStack } from '@chakra-ui/react';
+import { format, isAfter } from 'date-fns';
+import { Box, Button, VStack, Text } from '@chakra-ui/react';
 import FilmText from '@/components/FilmText';
 import TimeCounter from '@/components/TimeCounter';
 import Link from 'next/link';
+import { ptBR } from 'date-fns/locale';
 
 type FilmAvailabilityProps = {
   startdate?: string;
@@ -40,6 +41,9 @@ const FilmAvailability: React.VFC<FilmAvailabilityProps> = ({ startdate, enddate
         ) : !hasStarted && startdate ? (
           <>
             <FilmText label="Disponível em" />
+            <Text color="gray.600" textTransform="uppercase" fontSize="sm">
+              {format(new Date(startdate), 'PPpp', { locale: ptBR })}
+            </Text>
             <TimeCounter from={now} to={new Date(startdate)} />
           </>
         ) : null}

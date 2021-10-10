@@ -6,6 +6,7 @@ import Image from '@/components/Image';
 import Album from '@/components/Album';
 import { RichText } from 'prismic-reactjs';
 import vinyl from '../../../public/img/vinyl.png';
+import { isAfter } from 'date-fns';
 
 type VariantCallback = (args: {
   direction: number;
@@ -76,7 +77,7 @@ const AutoFlickBar = () => {
 const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex, setSelectedIndex }) => {
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
-
+  const today = new Date();
   const flickForward = useCallback(() => {
     setSelectedIndex(selectedIndex < albums.length - 1 ? selectedIndex + 1 : 0);
     setDirection(1);
@@ -105,8 +106,10 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
   return (
     <Box h="0" pb="150%" position="relative" sx={{ perspective: '10000px' }}>
       <AnimatePresence>
-        {wrap.map(({ uid, data: { cover, title, bgcolor } }, i) => {
+        {wrap.map(({ uid, data: { cover, title, bgcolor, enddate } }, i) => {
           const isCurrent = i + 1 === albumCount;
+          const hasEnded = !!enddate && !isAfter(new Date(enddate), today);
+
           return (
             <Album
               position="absolute"
@@ -152,7 +155,7 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
                 )}
               </Box>
 
-              {isCurrent && (
+              {isCurrent && !hasEnded && (
                 <MotionBox
                   pointerEvents="none"
                   initial={{ transform: 'none' }}
