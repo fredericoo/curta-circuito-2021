@@ -59,7 +59,7 @@ const FilmPage: NextRoute<FilmPageProps> = ({ film }) => {
     tabs.push({ label: 'Fotos', children: <Carousel photos={data.carousel.map(({ image }) => image)} /> });
 
   return (
-    <SimpleGrid columns={{ base: 1, lg: 2 }} maxW="100%" overflow="hidden">
+    <SimpleGrid columns={{ base: 1, lg: 2 }} maxW="100%" overflow="hidden" minH="calc(100vh - 72px)">
       <SEO title={data.seo_title} desc={data.seo_desc} imageUrl={data.seo_img?.url} />
       <Box>
         <Box bg={data.bgcolor} p={8}>
