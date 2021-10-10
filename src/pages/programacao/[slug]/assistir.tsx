@@ -1,4 +1,5 @@
 import NavbarPlayer from '@/components/Navbar/NavbarPlayer';
+import SEO from '@/components/SEO';
 import { getFilmBySlug, getFilmSlugs } from '@/lib/queries';
 import { Film, NextRoute } from '@/lib/types';
 import { Box, Container, Text } from '@chakra-ui/layout';
@@ -19,6 +20,7 @@ const PlayerPage: NextRoute<FilmPageProps> = ({ film }) => {
 
   return (
     <Box bg="gray.800" color="gray.100" pt={24} minH="100vh">
+      <SEO title={data.seo_title} desc={data.seo_desc} imageUrl={data.seo_img?.url} />
       {!hasStarted || hasEnded ? (
         <Container maxW="container.xl" textAlign="center">
           <Text fontSize="2xl" fontWeight="bold" textTransform="uppercase">
