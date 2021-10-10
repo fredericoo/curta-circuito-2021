@@ -1,5 +1,5 @@
-import { Box } from '@chakra-ui/layout';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Box, HStack } from '@chakra-ui/layout';
+import { useCallback, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Film } from '@/lib/types';
 import Image from '@/components/Image';
@@ -7,6 +7,7 @@ import Album from '@/components/Album';
 import { RichText } from 'prismic-reactjs';
 import vinyl from '../../../public/img/vinyl.png';
 import { isAfter } from 'date-fns';
+import { Button } from '@chakra-ui/react';
 
 type VariantCallback = (args: {
   direction: number;
@@ -15,10 +16,10 @@ type VariantCallback = (args: {
 }) => Record<string, string | number>;
 
 const variants: Record<string, VariantCallback> = {
-  enter: ({ index, albumCount }) => ({
-    transform: `rotateX(-30deg) rotateY(${-20 + (albumCount - 0 - index) * 20}deg) rotateZ(0) translateX(${
-      20 - 30 * Math.cos(albumCount + 1 - index)
-    }%) translateY(${albumCount * 20 - 15 * (albumCount - 0 - index)}%) translateZ(30px) scale(1)`,
+  enter: ({ index, albumCount, direction }) => ({
+    transform: `rotateX(-30deg) rotateY(${-20 + (albumCount - 0 - index + direction) * 20}deg) rotateZ(0) translateX(${
+      20 - 30 * Math.cos(albumCount + 1 - index + direction)
+    }%) translateY(${albumCount * 20 - 15 * (albumCount - 0 - index + direction)}%) translateZ(30px) scale(1)`,
     opacity: 0,
   }),
   visible: ({ index, albumCount }) => ({
@@ -39,10 +40,10 @@ const variants: Record<string, VariantCallback> = {
     }%) translateY(${albumCount * 20 - 15 * (albumCount - 1 - index)}%) translateZ(30px) scale(0.95)`,
     opacity: 1,
   }),
-  exit: ({ index, albumCount }) => ({
-    transform: `rotateX(-30deg) rotateY(${-20 + (albumCount - 2 - index) * 20}deg) rotateZ(0) translateX(${
-      20 - 30 * Math.cos(albumCount - 1 - index)
-    }%) translateY(${albumCount * 20 - 15 * (albumCount - 2 - index)}%) translateZ(30px) scale(1)`,
+  exit: ({ index, albumCount, direction }) => ({
+    transform: `rotateX(-30deg) rotateY(${-20 + (albumCount - 2 - index + direction) * 20}deg) rotateZ(0) translateX(${
+      20 - 30 * Math.cos(albumCount - 1 - index + direction)
+    }%) translateY(${albumCount * 20 - 15 * (albumCount - 2 - index + direction)}%) translateZ(30px) scale(1)`,
     opacity: 0,
   }),
 };
@@ -54,44 +55,21 @@ type Props = {
   setSelectedIndex: (index: number) => void;
 };
 
-const autoFlickDelay = 15000;
-
 const MotionBox = motion(Box);
-const AutoFlickBar = () => {
-  return (
-    <MotionBox
-      position="absolute"
-      display="block"
-      height="4px"
-      bg="white"
-      top="5%"
-      left="5%"
-      zIndex={2}
-      borderRadius="2px"
-      initial={{ width: '0%' }}
-      animate={{ width: '90%', transition: { ease: 'linear', duration: autoFlickDelay / 1000 } }}
-    />
-  );
-};
 
 const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex, setSelectedIndex }) => {
-  const [direction, setDirection] = useState(1);
-  const [isPaused, setIsPaused] = useState(false);
+  const [lastIndex, setLastIndex] = useState(selectedIndex);
   const today = new Date();
+
   const flickForward = useCallback(() => {
+    setLastIndex(selectedIndex);
     setSelectedIndex(selectedIndex < albums.length - 1 ? selectedIndex + 1 : 0);
-    setDirection(1);
   }, [albums.length, selectedIndex, setSelectedIndex]);
 
-  useEffect(() => {
-    const flick = () => {
-      if (!isPaused) {
-        flickForward();
-      }
-    };
-    const interval = setInterval(flick, autoFlickDelay);
-    return () => clearInterval(interval);
-  }, [albums, flickForward, isPaused]);
+  const flickBackward = useCallback(() => {
+    setLastIndex(selectedIndex);
+    setSelectedIndex(selectedIndex > 0 ? selectedIndex - 1 : albums.length - 1);
+  }, [albums.length, selectedIndex, setSelectedIndex]);
 
   const wrap = useMemo(() => {
     const wrap = albums.slice(selectedIndex, selectedIndex + albumCount);
@@ -117,14 +95,13 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
               w="70%"
               h="0"
               pb="70%"
-              custom={{ direction, index: i, albumCount }}
+              custom={{ direction: lastIndex > i ? 1 : -1, index: i, albumCount }}
               variants={variants}
               initial="enter"
               animate="visible"
               whileTap={isCurrent ? 'hold' : 'tap'}
-              onTapStart={isCurrent ? () => setIsPaused(true) : undefined}
-              onTap={isCurrent ? () => setIsPaused(false) : flickForward}
-              onTapCancel={isCurrent ? () => setIsPaused(false) : flickForward}
+              onTap={flickForward}
+              onTapCancel={flickForward}
               exit="exit"
               mixBlendMode={isCurrent ? 'normal' : 'multiply'}
               bgImage={`linear-gradient(-45deg, rgba(0,0,0,0), rgba(0,0,0,0.25)), linear-gradient(0deg, ${bgcolor}, ${bgcolor})`}
@@ -143,7 +120,6 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
                 w="100%"
                 h="100%"
               >
-                {isCurrent && !isPaused && <AutoFlickBar />}
                 {cover && (
                   <Image
                     src={cover?.url}
@@ -174,6 +150,21 @@ const AlbumFlicker: React.VFC<Props> = ({ albums, albumCount = 4, selectedIndex,
           );
         })}
       </AnimatePresence>
+      <HStack position="absolute" bottom="0" w="100%" justify="flex-end">
+        <Button bg="gray.200" onClick={flickBackward}>
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 8.5L2 8.5M2 8.5L8.5 2M2 8.5L8.5 15" stroke="black" strokeLinecap="round" />
+          </svg>
+        </Button>
+        <Button bg="gray.200" onClick={flickForward}>
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M13 7.5L6.5 0.999999M5.68248e-07 7.5L13 7.5L5.68248e-07 7.5ZM13 7.5L6.5 14L13 7.5Z"
+              stroke="black"
+            />
+          </svg>
+        </Button>
+      </HStack>
     </Box>
   );
 };
