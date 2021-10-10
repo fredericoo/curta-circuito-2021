@@ -15,8 +15,10 @@ type Reviewer = { image: PrismicImage; name: RichTextBlock[]; bio: RichTextBlock
 type Props = {
   data: {
     title: RichTextBlock[];
+    section_title: RichTextBlock[];
     bonustrack: RichTextBlock[];
     text: RichTextBlock[];
+    section_text: RichTextBlock[];
     guests: {
       image: PrismicImage;
       name: RichTextBlock[];
@@ -25,6 +27,7 @@ type Props = {
       link: PrismicDocumentLink & { data: { title: RichTextBlock[] } };
     }[];
     reviewer: Reviewer[];
+    profile: Reviewer[];
     seo_title?: string;
     seo_desc?: string;
     seo_img?: PrismicImage;
@@ -52,6 +55,24 @@ const AboutPage: NextRoute<Props> = ({ data, config }) => {
             <ReviewerBox bg="blue.600" key={i} {...props} />
           ))}
         </SimpleGrid>
+      </Container>
+      <Container maxW="container.xl" fontSize="md">
+        <Box py={16} textAlign="center">
+          <DiscoHeading>{data.section_title ? RichText.asText(data.section_title) : 'Musimágicos'}</DiscoHeading>
+          {data.section_text && (
+            <Box maxW="33ch" mx="auto">
+              <RichText render={data.section_text} />
+            </Box>
+          )}
+        </Box>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} columnGap={8} rowGap={16}>
+          {data.profile?.map((props, i) => (
+            <ReviewerBox bg="yellow.800" key={i} {...props} />
+          ))}
+        </SimpleGrid>
+      </Container>
+
+      <Container maxW="container.xl" fontSize="md">
         <Box py={16} textAlign="center">
           <DiscoHeading>{data.title ? RichText.asText(data.title) : 'Sobre'}</DiscoHeading>
         </Box>
