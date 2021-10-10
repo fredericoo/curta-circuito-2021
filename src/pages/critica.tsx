@@ -1,7 +1,7 @@
 import DiscoHeading from '@/components/DiscoHeading';
 import Image from '@/components/Image';
 import { getPage, resolveDocumentURL } from '@/lib/queries';
-import { Config, PrismicImage, PrismicMediaLink } from '@/lib/types';
+import { Config, NextRoute, PrismicImage, PrismicMediaLink } from '@/lib/types';
 import { Box, Container, HStack, SimpleGrid, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 import { Document } from '@prismicio/client/types/documents';
@@ -16,7 +16,7 @@ type Props = {
   config: Config;
 };
 
-const AboutPage: React.VFC<Props> = ({ data, config }) => {
+const AboutPage: NextRoute<Props> = ({ data, config }) => {
   if (!data) return null;
   const pageTitle = data.title ? RichText.asText(data.title) : 'Cadernos de Crítica';
   return (

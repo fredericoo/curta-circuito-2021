@@ -1,19 +1,25 @@
 import { ChakraProvider, Box } from '@chakra-ui/react';
 import { theme } from '@/styles/theme';
 import Navbar from '@/components/Navbar';
-import { AppComponent } from 'next/dist/shared/lib/router/router';
+import Router, { CompletePrivateRouteInfo } from 'next/dist/shared/lib/router/router';
+import { NextRoute } from '@/lib/types';
 
-const mockMenuItems = [
+const menuItems = [
   { label: 'Cadernos de Crítica', path: '/critica' },
   { label: 'Sobre', path: '/sobre' },
   { label: 'Convidados', path: '/convidados' },
   { label: 'Programação', path: '/' },
 ];
 
-const App: AppComponent = ({ Component, pageProps }) => {
+type AppProps = Pick<CompletePrivateRouteInfo, 'err'> & {
+  router: Router;
+} & { Component: NextRoute; pageProps: Record<string, unknown> };
+
+const App: React.VFC<AppProps> = ({ Component, pageProps }) => {
+  const NavbarComponent = Component.Navbar || Navbar;
   return (
     <ChakraProvider theme={theme}>
-      <Navbar menuItems={mockMenuItems} />
+      <NavbarComponent menuItems={menuItems} />
       <Box bg="gray.100">
         <Component {...pageProps} />
       </Box>

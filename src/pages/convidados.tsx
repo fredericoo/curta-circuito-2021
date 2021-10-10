@@ -1,6 +1,6 @@
 import DiscoHeading from '@/components/DiscoHeading';
 import { getPage, resolveDocumentURL } from '@/lib/queries';
-import { Config, PrismicDocumentLink, PrismicImage } from '@/lib/types';
+import { Config, NextRoute, PrismicDocumentLink, PrismicImage } from '@/lib/types';
 import { Box, Container, SimpleGrid } from '@chakra-ui/layout';
 import { styled, Text } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
@@ -32,7 +32,7 @@ type Props = {
   config?: Config;
 };
 
-const AboutPage: React.VFC<Props> = ({ data, config }) => {
+const AboutPage: NextRoute<Props> = ({ data, config }) => {
   if (!data) return null;
 
   return (

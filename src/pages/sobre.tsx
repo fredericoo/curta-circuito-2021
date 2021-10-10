@@ -1,7 +1,7 @@
 import DiscoHeading from '@/components/DiscoHeading';
 import FilmText from '@/components/FilmText';
 import { getPage } from '@/lib/queries';
-import { Config, PrismicImage, PrismicMediaLink } from '@/lib/types';
+import { Config, NextRoute, PrismicImage, PrismicMediaLink } from '@/lib/types';
 import { Box, Container, SimpleGrid } from '@chakra-ui/layout';
 import { styled, VStack } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
@@ -31,7 +31,7 @@ type Props = {
 
 const MotionBox = motion(Box);
 
-const AboutPage: React.VFC<Props> = ({ data, config }) => {
+const AboutPage: NextRoute<Props> = ({ data, config }) => {
   if (!data) return null;
 
   const rightSticker = data.sticker_images[0].image;

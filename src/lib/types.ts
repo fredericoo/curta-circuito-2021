@@ -1,6 +1,9 @@
 import type { RichTextBlock } from 'prismic-reactjs';
 import type { Document } from '@prismicio/client/types/documents';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type NextRoute<T = Record<string, unknown>> = React.VFC<T> & { Navbar?: React.VFC<any> };
+
 export type Film = Omit<Document, 'type' | 'data'> &
   PrismicDocumentLink & {
     type: 'filme';
@@ -30,6 +33,7 @@ export type Film = Omit<Document, 'type' | 'data'> &
       seo_title?: string;
       seo_desc?: string;
       seo_img?: PrismicImage;
+      player?: string;
     };
   };
 

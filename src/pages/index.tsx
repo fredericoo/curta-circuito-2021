@@ -2,7 +2,7 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import orderFilms from '@/lib/orderFilms';
 import { getAllFilms, getPage } from '@/lib/queries';
-import { Config, Film, PrismicImage } from '@/lib/types';
+import { Config, Film, NextRoute, PrismicImage } from '@/lib/types';
 import FilmsFlicker from '@/views/FilmsFlicker/FilmsFlicker';
 import { Container, SimpleGrid, GridItem, Text, Box } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
@@ -20,7 +20,7 @@ type HomeProps = {
   config?: Config;
 };
 
-const Home: React.VFC<HomeProps> = ({ data, films, config }) => (
+const Home: NextRoute<HomeProps> = ({ data, films, config }) => (
   <Box maxW="100vw" overflow="hidden">
     <Container maxW="container.xl" pt={{ md: 16 }}>
       <SEO title={data?.seo_title} desc={data?.seo_desc} imageUrl={data?.seo_img?.url} />

@@ -1,5 +1,5 @@
 import { getFilmBySlug, getFilmSlugs } from '@/lib/queries';
-import { Film } from '@/lib/types';
+import { Film, NextRoute } from '@/lib/types';
 import { Accordion, AccordionButton, AccordionItem, AccordionPanel } from '@chakra-ui/accordion';
 import { Box, SimpleGrid, VStack, HStack, Button, Text } from '@chakra-ui/react';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -22,9 +22,9 @@ type FilmPageProps = {
 
 const MotionBox = motion(Box);
 
-const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
+const FilmPage: NextRoute<FilmPageProps> = ({ film }) => {
   const { back } = useRouter();
-
+  const data = film.data;
   const tabs = [];
 
   data.trailer?.url &&
@@ -50,8 +50,8 @@ const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
           title={data.interview_title}
           text={data.interview_text}
           image={data.interview_image}
-          spotify={{ link_type: 'Web', url: 'google' }}
-          youtube={{ link_type: 'Web', url: 'google' }}
+          spotify={data.interview_spotify}
+          youtube={data.interview_youtube}
         />
       ),
     });
@@ -122,7 +122,11 @@ const FilmPage: React.VFC<FilmPageProps> = ({ film: { data } }) => {
               <RichText render={data.description} />
             </Box>
             <Box display="flex" justifyContent={{ xl: 'flex-end' }}>
-              <FilmAvailability startdate={data?.startdate} enddate={data.enddate} />
+              <FilmAvailability
+                startdate={data?.startdate}
+                enddate={data.enddate}
+                watchUrl={`/programacao/${film.uid}/assistir`}
+              />
             </Box>
           </SimpleGrid>
           <Box>

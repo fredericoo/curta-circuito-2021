@@ -90,7 +90,7 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
             </PrompterText>
           </AnimatePresence>
         </Box>
-        <HStack wrap="wrap" spacing={0}>
+        <HStack align="flex-start" spacing={0}>
           {film && (
             <Link href={resolveDocumentURL(film)} passHref>
               <Button as="a" variant="secondary" rightIcon={<PlusIcon />} mr={4}>
@@ -98,7 +98,11 @@ const FilmsFlicker: React.VFC<Props> = ({ films }) => {
               </Button>
             </Link>
           )}
-          <FilmAvailability startdate={data.startdate} enddate={data.enddate} />
+          <FilmAvailability
+            startdate={data.startdate}
+            enddate={data.enddate}
+            watchUrl={`/programacao/${film.uid}/assistir`}
+          />
         </HStack>
       </Box>
     </SimpleGrid>
